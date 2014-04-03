@@ -1,0 +1,4 @@
+url_shortener_test:
+    resource: "@UrlShortenerTestBundle/Resources/config/routing.yml"
+    prefix:   /
+
