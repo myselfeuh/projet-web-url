@@ -1,7 +1,0 @@
-parameters:
-#    gestion_film_user.example.class: GestionFilm\UserBundle\Example
-
-services:
-#    gestion_film_user.example:
-#        class: %gestion_film_user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

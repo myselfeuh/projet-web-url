@@ -1,8 +1,0 @@
-gestion_film_user:
-    resource: "@GestionFilmUserBundle/Resources/config/routing.yml"
-    prefix:   /
-
-url_shortener_test:
-    resource: "@UrlShortenerTestBundle/Resources/config/routing.yml"
-    prefix:   /
-

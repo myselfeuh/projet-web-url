@@ -1,7 +1,0 @@
-parameters:
-#    url_shortener_test.example.class: UrlShortener\TestBundle\Example
-
-services:
-#    url_shortener_test.example:
-#        class: %url_shortener_test.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

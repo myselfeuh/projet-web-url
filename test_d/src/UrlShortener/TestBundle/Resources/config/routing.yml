@@ -1,7 +1,0 @@
-url_shortener_test_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: UrlShortenerTestBundle:Default:index }
-
-url_shortener_test_homemade_url:
-    pattern:  /test/{nom_test}
-    defaults: { _controller: UrlShortenerTestBundle:Default:test }

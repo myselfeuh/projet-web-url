@@ -1,5 +1,0 @@
-_assetic:
-    resource: .
-    type: assetic
-_app:
-    resource: '/home/me/taf/projet{web|url}/test_d/app/config/routing_dev.yml'
