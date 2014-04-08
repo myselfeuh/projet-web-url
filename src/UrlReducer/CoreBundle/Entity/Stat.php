@@ -5,7 +5,8 @@ namespace UrlReducer\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Stat
+ * @Entity
+ * @Table(name="utilisations")
  */
 class Stat
 {

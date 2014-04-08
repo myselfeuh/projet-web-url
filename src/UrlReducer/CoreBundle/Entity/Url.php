@@ -5,7 +5,8 @@ namespace UrlReducer\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Url
+ * @Entity
+ * @Table(name="urls")
  */
 class Url
 {
