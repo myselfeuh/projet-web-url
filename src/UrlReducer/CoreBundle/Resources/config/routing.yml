@@ -7,5 +7,9 @@ url_reducer_core_homepage:
     defaults: { _controller: UrlReducerCoreBundle:Default:index }
 
 url_reducer_core_index:
-    pattern:  /index
+    pattern:  /
     defaults: { _controller: UrlReducerCoreBundle:Url:generateReducedUrl }
+
+url_reducer_core_gogogo:
+    pattern:  /{sUrl}
+    defaults: { _controller: UrlReducerCoreBundle:Url:goToSourceUrl }
