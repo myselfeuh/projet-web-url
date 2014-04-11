@@ -13,3 +13,7 @@ url_reducer_core_index:
 url_reducer_core_gogogo:
     pattern:  /{sUrl}
     defaults: { _controller: UrlReducerCoreBundle:Url:goToSourceUrl }
+
+url_reducer_core_login:
+    pattern:  /login
+    defaults: { _controller: UrlReducerCoreBundle:Member:login }

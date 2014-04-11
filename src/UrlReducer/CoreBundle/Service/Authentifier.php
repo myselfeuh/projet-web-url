@@ -3,8 +3,6 @@
 
 namespace UrlReducer\CoreBundle\Service;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-
 class Authentifier {
 	/**
 	 * Possible status of authentification 
@@ -28,7 +26,7 @@ class Authentifier {
 	 *
 	 * @param Session - the session object 
 	 */
-	public function __construct(Session $oSession) {
+	public function __construct($oSession, $oDoctrine) {
 		$iMemberId = $oSession->get('member_id');
 
 		if (!empty($iMemberId)) {
@@ -40,23 +38,9 @@ class Authentifier {
 	}
 
 	/**
-	 * Try to retrieve a member from session
+	 * Set the correct current status and returns it
 	 *
-	 * @param Session - the session object 
-	 */
-	// public function init(Session $oSession) {
-	// 	$iMemberId = $oSession->get('member_id');
-
-	// 	if (!empty($iMemberId)) {
-	// 		$oMemberRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
- //            $this->_oMember = $oMemberRepository->find($iMemberId);
-	// 	}
-
-	// 	$this->getStatus();
-	// }
-
-	/**
-	 * Set the correct current status
+	 * @return boolean - the customer's status
 	 */
 	public function getStatus() {
 		if ($this->_oMember == null) {
@@ -66,6 +50,17 @@ class Authentifier {
 		} else {
 			$this->_iStatus = Authentifier::BASIC_MEMBER;
 		}
+
+		return $this->_iStatus;
+	}
+
+	/**
+	 * Return the current customer (or null if the isn't)
+	 *
+	 * @return boolean - the customer
+	 */
+	public function getMember() {
+		return $this->_oMember;
 	}
 
 	/**
@@ -81,13 +76,4 @@ class Authentifier {
 	public function isConnected() {
 		return ($this->_iStatus != Authentifier::NOT_CONNECTED);
 	}
-
-	/**
-	 * Generate the templates code for the views
-	 */
-	public function createViewHelper($bIsConnected = false) {
-		
-	}
-
-
 }

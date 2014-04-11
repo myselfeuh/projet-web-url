@@ -13,7 +13,9 @@ class UrlController extends Controller {
      */
     public function generateReducedUrlAction() {
         $oRequest = $this->getRequest();
-        $aResponseData = array();
+
+        $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+        $oMember = $oAuthentifier->getMember();
 
         $oUrl = new Url;
 
@@ -27,11 +29,7 @@ class UrlController extends Controller {
             $oFormUrl->bind($oRequest);
 
             if ($oFormUrl->isValid()) {
-                // default: no owner for that url
-                $oMember = null;
-
-                $oPost = $oRequest->request;
-                $sSourceUrl = $oPost->get('source');
+                $sSourceUrl = $oFormUrl->getData()->getSource();
 
                 $oSession = $this->get('session');
                 $iMemberId = $oSession->get('member_id');
@@ -39,26 +37,24 @@ class UrlController extends Controller {
                 $oDoctrine = $this->getDoctrine();
                 $oManager = $oDoctrine->getManager();
 
-                if ($iMemberId != null) {
-                    $oMemberRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
-                    $oMember = $oMemberRepository->find($iMemberId);
-                }
-
-                $sShortUrl = $this->getReducedUrl($sSourceUrl);
-                $aResponseData['short_url'] = $sShortUrl;
+                $sShortUrl = $this->reduceUrl($sSourceUrl);
 
                 // we only need to set the short url, the real one was bind through oFormUrl
                 $oUrl->setCourte($sShortUrl);
+                $oUrl->setAuteur($oMember);
 
-                $oManager->persist($oUrl);
+                // $oManager->persist($oUrl);
                 $oManager->flush();                     
             }
         }
 
-        $aResponseData['form_url'] = $oFormUrl->createView();
+        $aResponseData = array(
+            'form_generate_url' => $oFormUrl->createView(),
+            'member'            => $oAuthentifier->getMember()
+        );
         
         return $this->render(
-            'UrlReducerCoreBundle:Url:form_url.html.twig', 
+            'UrlReducerCoreBundle:Url:home.html.twig', 
             $aResponseData
         );
     }
@@ -93,13 +89,23 @@ class UrlController extends Controller {
     /**
      * Encrypt url to short url, with salt by user (if he is connected)
      *
-     * @param String - the real 
+     * @param String - the real url
      */
-    private function getReducedUrl($sUrl) {
+    private function reduceUrl($sUrl) {
         $sCryptedUrl = crypt($sUrl, 'CRYPT_BLOWFISH');
         $sReducedUrl = substr($sCryptedUrl, 0, 8);
 
         return $sReducedUrl;
+    }
+
+    /**
+     * Get the full-reduced url (with host part) 
+     *
+     * @param String - the encrypted url
+     */
+    private function getReducedUrl($sShortUrl) {
+        $oServerData = $this->getRequest()->server;
+        return $oServerData->get('HTTP_REFERER') . $sShortUrl;
     }
 }
 
