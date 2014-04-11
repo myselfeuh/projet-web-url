@@ -7,6 +7,10 @@ use UrlReducer\CoreBundle\Entity\Url;
 use UrlReducer\CoreBundle\Entity\Membre;
 
 class DefaultController extends Controller {
+    public function phpinfoAction() {
+        echo phpinfo();
+    }
+
     public function indexAction($name) {
     	$oDoctrine = $this->getDoctrine();
     	$oManager = $oDoctrine->getManager();

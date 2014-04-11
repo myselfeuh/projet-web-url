@@ -1,3 +1,7 @@
+url_reducer_core_phpinfo:
+    pattern:  /phpinfo
+    defaults: { _controller: UrlReducerCoreBundle:Default:phpinfo }
+
 url_reducer_core_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: UrlReducerCoreBundle:Default:index }
