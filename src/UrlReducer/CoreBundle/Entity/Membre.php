@@ -10,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="membres", uniqueConstraints={@ORM\UniqueConstraint(name="pseudo", columns={"pseudo"})})
  * @ORM\Entity
  */
-class Membre
-{
+class Membre {
     /**
      * @var integer
      *
@@ -71,4 +70,175 @@ class Membre
     private $profil;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Membre
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set prenom
+     *
+     * @param string $prenom
+     * @return Membre
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * Get prenom
+     *
+     * @return string 
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * Set pseudo
+     *
+     * @param string $pseudo
+     * @return Membre
+     */
+    public function setPseudo($pseudo)
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * Get pseudo
+     *
+     * @return string 
+     */
+    public function getPseudo()
+    {
+        return $this->pseudo;
+    }
+
+    /**
+     * Set mail
+     *
+     * @param string $mail
+     * @return Membre
+     */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    /**
+     * Get mail
+     *
+     * @return string 
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * Set mdp
+     *
+     * @param string $mdp
+     * @return Membre
+     */
+    public function setMdp($mdp)
+    {
+        $this->mdp = $mdp;
+
+        return $this;
+    }
+
+    /**
+     * Get mdp
+     *
+     * @return string 
+     */
+    public function getMdp()
+    {
+        return $this->mdp;
+    }
+
+    /**
+     * Set activation
+     *
+     * @param string $activation
+     * @return Membre
+     */
+    public function setActivation($activation)
+    {
+        $this->activation = $activation;
+
+        return $this;
+    }
+
+    /**
+     * Get activation
+     *
+     * @return string 
+     */
+    public function getActivation()
+    {
+        return $this->activation;
+    }
+
+    /**
+     * Set profil
+     *
+     * @param string $profil
+     * @return Membre
+     */
+    public function setProfil($profil)
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    /**
+     * Get profil
+     *
+     * @return string 
+     */
+    public function getProfil()
+    {
+        return $this->profil;
+    }
 }

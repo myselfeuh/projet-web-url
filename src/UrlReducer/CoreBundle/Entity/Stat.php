@@ -39,4 +39,60 @@ class Stat
     private $url;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Stat
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set url
+     *
+     * @param \UrlReducer\CoreBundle\Entity\Urls $url
+     * @return Stat
+     */
+    public function setUrl(\UrlReducer\CoreBundle\Entity\Urls $url = null)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return \UrlReducer\CoreBundle\Entity\Urls 
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 }

@@ -1,3 +1,7 @@
 url_reducer_core_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: UrlReducerCoreBundle:Default:index }
+
+url_reducer_core_index:
+    pattern:  /index
+    defaults: { _controller: UrlReducerCoreBundle:Url:generateReducedUrl }
