@@ -1,19 +1,11 @@
 {# src/UrlReducer/CoreBundle/Resources/views/Url/home.html.twig #}
 
-
-
 <html>
 	<head></head>
 	<body>
-		{% if member is empty %}
-			{{ include('UrlReducerCoreBundle:Authentifier:not-connected.authentifier.html.twig') }}
-		{% else %}
-			{{ include(
-				'UrlReducerCoreBundle:Authentifier:connected.authentifier.html.twig', 
-				{'member': member}
-			   )
-			}}
-		{% endif %}
+		<div id="menu">
+		    {{ render(controller('UrlReducerCoreBundle:Member:menu')) }}
+		</div>
 
 		{% if reduced_url is defined %} 
 			<a href="{{ reduced_url }}">{{ reduced_url }}</a>

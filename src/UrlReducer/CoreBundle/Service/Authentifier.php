@@ -87,18 +87,26 @@ class Authentifier {
 	/**
 	 * Return a set of mapped label and urls for menu
 	 */
-	public function generateMemberMenuUrls() {
+	public function generateMemberMenuComponents($sCurrentPage = 'url_reducer_core_url_generate') {
 		$aMenuItems = array();
 
 		if ($this->isVisitor()) {
-			$aMenuItems['login'] = $this->generateUrl('url_reducer_core_member_login');
-			$aMenuItems['inscription'] = $this->generateUrl('url_reducer_core_member_register');
+			$aMenuItems['message'] = 'Bienvenue';
+ 
+			$aMenuItems['urls'] = array(
+				'login' 	  => 'url_reducer_core_member_login',
+				'inscription' => 'url_reducer_core_member_register'
+			);
 		} else {
-			$aMenuItems['mon compte'] = $this->generateUrl('url_reducer_core_member_login');
-			$aMenuItems['mes statistiques'] = $this->generateUrl('url_reducer_core_member_register');
+			$aMenuItems['message'] = 'Bonjour, ' . $this->_oMember->getPseudo();
+ 
+			$aMenuItems['urls'] = array(
+				'mon compte' 	  => 'url_reducer_core_member_account_menu',
+				'logout' => 'url_reducer_core_member_logout'
+			);
 
 			if ($this->isAdmin()) {
-				$aMenuItems['espace administrateur'] = $this->generateUrl('url_reducer_core_member_admin');
+				$aMenuItems['espace administrateur'] = 'url_reducer_core_member_admin';
 			}
 		}
 

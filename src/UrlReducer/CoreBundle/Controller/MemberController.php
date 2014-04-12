@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
 use UrlReducer\CoreBundle\Entity\Membre;
+use UrlReducer\CoreBundle\Service\Authentifier;;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -172,6 +173,51 @@ class MemberController extends Controller {
     	$sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
 	    
 	    return $this->redirect($sUrlToIndex);
+    }
+
+    /**
+     *
+     */
+    public function menuAction(Request $oRequest) {
+    	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+    	$oRouter = $this->get('router');
+
+    	var_dump($oRouter);
+
+    	$aUrls = array();
+
+    	switch ($oAuthentifier->getStatus()) {
+    		case Authentifier::IS_VISITOR:
+    			$sMessage = 'Bienvenue';
+    			
+    			$aUrls['url_reducer_core_member_login'] 	= 'login';
+    			$aUrls['url_reducer_core_member_register'] 	= 'inscription';
+    			break;
+    		case Authentifier::ADMIN_MEMBER:
+    			$aUrls['url_reducer_core_member_admin'] 	= 'administrateur';
+    		case Authentifier::BASIC_MEMBER:
+    			$sMessage = 'Bonjour, ' . $oAuthentifier->getMember()->getPseudo();
+    			
+    			$aUrls['url_reducer_core_member_account_menu'] = 'mon compte';
+    			$aUrls['url_reducer_core_member_logout'] = 'logout';
+    			break;
+    	}
+
+    	
+
+    	if (array_key_exists($sCurrentRoute, $aUrls)) {
+    		unset($aUrls[$sCurrentRoute]);
+    	}
+
+    	$oResponse = $this->render(
+            'UrlReducerCoreBundle:Member:menu.member.html.twig',
+            array(
+            	'menu_message' => $sMessage,
+            	'menu_urls' => $aUrls
+            )
+        );
+
+        return $oResponse;
     }
 }
 

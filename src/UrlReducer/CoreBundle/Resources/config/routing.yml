@@ -34,6 +34,10 @@ url_reducer_core_member_account_modify:
     pattern:  /member/account/modify
     defaults: { _controller: UrlReducerCoreBundle:Member:modify }
 
+url_reducer_core_member_admin:
+    pattern:  /member/admin
+    defaults: { _controller: UrlReducerCoreBundle:Member:admin }
+
 url_reducer_core_member_url_list:
     pattern:  /member/url/list
     defaults: { _controller: UrlReducerCoreBundle:Url:list }

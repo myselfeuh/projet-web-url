@@ -51,7 +51,7 @@ class UrlController extends Controller {
         }
 
         $aRenderingData['form_generate_url'] = $oFormUrl->createView();
-        $aRenderingData['member_menu_urls']  = $oAuthentifier->generateMemberMenuUrls();
+        $aRenderingData['member_menu']       = $oAuthentifier->generateMemberMenuComponents();
         
         return $this->render(
             'UrlReducerCoreBundle:Url:home.html.twig', 
@@ -86,20 +86,18 @@ class UrlController extends Controller {
     }
 
     /**
-     * Encrypt url to short url, with salt by user (if he is connected)
+     * Encrypt url to short url, with salt by user_id (if he is connected)
      *
      * @param String - the real url
      */
     private function reduceUrl($sUrl, $oMember = null) {
         if ($oMember != null) {
-            $sCryptedUrl = password_hash($sUrl, PASSWORD_BCRYPT, array('salt', serialize($oMember)));
+            $sHashedUrl = sha1($oMember->getId() . $sUrl);
         } else {
-            $sCryptedUrl = password_hash($sUrl, PASSWORD_BCRYPT);
+            $sHashedUrl = sha1($sUrl);
         }
 
-        $sReducedUrl = substr($sCryptedUrl, 10, 4) . substr($sCryptedUrl, -4);
-
-        return $sReducedUrl;
+        return substr($sHashedUrl, 0, 8);
     }
 
     /**

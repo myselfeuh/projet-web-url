@@ -1,0 +1,7 @@
+{# src/UrlReducer/CoreBundle/Resources/views/Member/menu.member.html.twig #}
+
+{{ menu_message }}
+
+{% for url, label in menu_urls %}
+    <span><a href="{{ path(url) }}">{{ label }}</a></span>
+{% endfor %}

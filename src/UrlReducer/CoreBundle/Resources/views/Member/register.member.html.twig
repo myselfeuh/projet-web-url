@@ -1,6 +1,13 @@
+{# src/UrlReducer/CoreBundle/Resources/views/Member/register.member.html.twig #}
+
 <h1>inscription</h1>
 
 <div>
+
+<div id="menu">
+    {{ render(controller('UrlReducerCoreBundle:Member:menu')) }}
+</div>
+
 {% for label, flashes in app.session.flashbag.all %}
     {% for flash in flashes %}
         <div class="alert alert-{{ label }}">
