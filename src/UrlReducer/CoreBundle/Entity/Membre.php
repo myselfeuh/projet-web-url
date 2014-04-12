@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Membre
  *
  * @ORM\Table(name="membres", uniqueConstraints={@ORM\UniqueConstraint(name="pseudo", columns={"pseudo"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UrlReducer\CoreBundle\Entity\MembreRepository")
  */
 class Membre {
     /**

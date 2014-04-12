@@ -112,8 +112,6 @@ class MemberController extends Controller {
 
             $oMemberRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
 
-            var_dump($oMember);
-
             // check: if the user who's registering is the first of the application, he must be an administrator
             if ($oMemberRepository->count() == 0 && $oMember->getProfil() != 'admin') {
             	$oFlashBag->add('user_flash', 'First user registered must be an admin');
