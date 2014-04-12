@@ -51,7 +51,7 @@ class UrlController extends Controller {
         }
 
         $aRenderingData['form_generate_url'] = $oFormUrl->createView();
-        $aRenderingData['member']            = $oMember;
+        $aRenderingData['member_menu_urls']  = $oAuthentifier->generateMemberMenuUrls();
         
         return $this->render(
             'UrlReducerCoreBundle:Url:home.html.twig', 
@@ -69,21 +69,20 @@ class UrlController extends Controller {
 
         $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
         $oUrl = $oUrlRepository->findOneByCourte($sUrl);
-
         
         if ($oUrl != null) {
         // url found, redirection...
-            $oRedirection = $this->redirect($oUrl->getSource());
+            $oResponse = $this->redirect($oUrl->getSource());
 
         } else {
         // url not found, back to index 
             $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
-            $oRedirection = $this->redirect($sUrlToIndex);
+            $oResponse = $this->redirect($sUrlToIndex);
 
-            // @TODO message flash
+            $this->get('session')->getFlashBag()->add('url error', "L'url demandée n'a pas été trouvée");
         }
 
-        return $oRedirection;
+        return $oResponse;
     }
 
     /**

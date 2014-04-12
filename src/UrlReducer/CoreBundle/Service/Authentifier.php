@@ -7,7 +7,7 @@ class Authentifier {
 	/**
 	 * Possible status of authentification 
 	 */
-	const NOT_CONNECTED = 0;
+	const IS_VISITOR = 0;
 	const BASIC_MEMBER = 1;
 	const ADMIN_MEMBER = 2;
 
@@ -19,7 +19,7 @@ class Authentifier {
 	/**
 	 * The customer status on the site
 	 */	
-	private $_iStatus = Authentifier::NOT_CONNECTED;
+	private $_iStatus = Authentifier::IS_VISITOR;
 
 	/**
 	 * Try to retrieve a member from session
@@ -44,7 +44,7 @@ class Authentifier {
 	 */
 	public function getStatus() {
 		if ($this->_oMember == null) {
-			$this->_iStatus = Authentifier::NOT_CONNECTED;
+			$this->_iStatus = Authentifier::IS_VISITOR;
 		} else if ($this->_oMember->getProfil() == 'admin') {
 			$this->_iStatus = Authentifier::ADMIN_MEMBER;
 		} else {
@@ -64,6 +64,20 @@ class Authentifier {
 	}
 
 	/**
+	 * Return true if customer is not connected (simple visitor)
+	 */
+	public function isVisitor() {
+		return ($this->_iStatus == Authentifier::IS_VISITOR);
+	}
+
+	/**
+	 * Return true if customer is member, but not admin
+	 */
+	public function isMember() {
+		return ($this->_iStatus == Authentifier::BASIC_MEMBER);
+	}
+
+	/**
 	 * Return true if customer is admin
 	 */
 	public function isAdmin() {
@@ -71,9 +85,23 @@ class Authentifier {
 	}
 
 	/**
-	 * Return true if customer is connected (Member or Admin)
+	 * Return a set of mapped label and urls for menu
 	 */
-	public function isConnected() {
-		return ($this->_iStatus != Authentifier::NOT_CONNECTED);
+	public function generateMemberMenuUrls() {
+		$aMenuItems = array();
+
+		if ($this->isVisitor()) {
+			$aMenuItems['login'] = $this->generateUrl('url_reducer_core_member_login');
+			$aMenuItems['inscription'] = $this->generateUrl('url_reducer_core_member_register');
+		} else {
+			$aMenuItems['mon compte'] = $this->generateUrl('url_reducer_core_member_login');
+			$aMenuItems['mes statistiques'] = $this->generateUrl('url_reducer_core_member_register');
+
+			if ($this->isAdmin()) {
+				$aMenuItems['espace administrateur'] = $this->generateUrl('url_reducer_core_member_admin');
+			}
+		}
+
+		return $aMenuItems;
 	}
 }

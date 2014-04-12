@@ -1,5 +1,7 @@
 {# src/UrlReducer/CoreBundle/Resources/views/Url/home.html.twig #}
 
+
+
 <html>
 	<head></head>
 	<body>
@@ -13,7 +15,10 @@
 			}}
 		{% endif %}
 
-		<a href="{{ reduced_url }}">{{ reduced_url }}</a>
+		{% if reduced_url is defined %} 
+			<a href="{{ reduced_url }}">{{ reduced_url }}</a>
+		{% endif %}
+		
 		{{ form(form_generate_url) }}
 
 		{% if short_url is defined %} 

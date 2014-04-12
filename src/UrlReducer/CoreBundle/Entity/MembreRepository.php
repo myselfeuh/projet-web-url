@@ -15,9 +15,9 @@ class MembreRepository extends EntityRepository {
 	 * Returns number of rows
 	 */
 	public function count() {
-		return $this->createQueryBuilder('1')
-		 ->select('COUNT(1)')
-		 ->getQuery()
-		 ->getSingleScalarResult();
+		return $this->createQueryBuilder('id')
+					->select('COUNT(id)')
+					->getQuery()
+					->getSingleScalarResult();
 	}
 }

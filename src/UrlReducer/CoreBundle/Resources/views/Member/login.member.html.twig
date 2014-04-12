@@ -1,6 +1,7 @@
 <h1>inscription</h1>
 
 <div>
+<a href="{{ path('url_reducer_core_member_register') }}">inscrivez vous</a>
 {% for label, flashes in app.session.flashbag.all %}
     {% for flash in flashes %}
         <div class="alert alert-{{ label }}">

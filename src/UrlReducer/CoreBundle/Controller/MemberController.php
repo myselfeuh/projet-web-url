@@ -38,7 +38,7 @@ class MemberController extends Controller {
 	   		$oMemberRepository = $this->getDoctrine()->getRepository('UrlReducerCoreBundle:Membre');
         	$oMember 		   = $oMemberRepository->findOneByPseudo($sPseudo);
 
-        	$sCryptedPassword = crypt($sPassword, 'CRYPT_BLOWFISH');
+        	$sCryptedPassword = crypt($sPassword, 'user_salt');
 
         	if ($oMember == null) {
         		$oFlashBag->add('user_flash', 'No user found');
@@ -71,64 +71,72 @@ class MemberController extends Controller {
      * 
      */
     public function registerAction(Request $oRequest) {
-    	// initialization
-    	$oResponse = null;
-    	$oMember = new Membre;
+	    try {
+	    	// initialization
+	    	$oResponse = null;
+	    	$oMember = new Membre;
 
-    	// get some services
-    	$oSession = $this->get('session');
-	    $oFlashBag = $oSession->getFlashBag();
+	    	// get some services
+	    	$oSession = $this->get('session');
+		    $oFlashBag = $oSession->getFlashBag();
 
-		$oFormBuilder = $this->createFormBuilder($oMember)
-		                     ->add('nom', 'text')
-		                     ->add('prenom', 'text')
-		                     ->add('pseudo', 'text')
-		                     ->add('mail', 'text')
-		                     ->add('mdp', 'password')
-		                     ->add('profil', 'choice', 
-		                     	array('choices' => 
-		                     		array(
-		                     			'membre' => 'Membre', 
-		                     			'admin'  => 'Administrateur'
-		                     		)
-								))
-		                     ->add("s'inscrire", 'submit');
+			$oFormBuilder = $this->createFormBuilder($oMember)
+			                     ->add('nom', 'text')
+			                     ->add('prenom', 'text')
+			                     ->add('pseudo', 'text')
+			                     ->add('mail', 'text')
+			                     ->add('mdp', 'password')
+			                     ->add('profil', 'choice', 
+			                     	array('choices' => 
+			                     		array(
+			                     			'membre' => 'Membre', 
+			                     			'admin'  => 'Administrateur'
+			                     		)
+									))
+			                     ->add("s'inscrire", 'submit');
 
-		// handle form
-		$oFormRegister = $oFormBuilder->getForm();
-	    $oFormRegister->handleRequest($oRequest);
+			// handle form
+			$oFormRegister = $oFormBuilder->getForm();
+		    $oFormRegister->handleRequest($oRequest);
 
-	    if ($oFormRegister->isValid()) {
-	    	// retrieve form data as a Member object
-	    	$oMember = $oFormRegister->getData();
+		    if (!$oFormRegister->isValid()) {
+		    	throw new MemberControllerException('Form has not yet been submitted');
+		    } else {
+		    	// retrieve form data as a Member object
+		    	$oMember = $oFormRegister->getData();
 
-	    	// crypt user's password
-	    	$sPassword 	 = $oMember->getMdp();
-        	$sCryptedPassword = crypt($sPassword, 'user_salt');
+		    	// crypt user's password
+		    	$sPassword 	 = $oMember->getMdp();
+	        	$sCryptedPassword = crypt($sPassword, 'user_salt');
 
-        	// get some services
-        	$oDoctrine = $this->getDoctrine();
-            $oManager = $oDoctrine->getManager();
+	        	// get some services
+	        	$oDoctrine = $this->getDoctrine();
+	            $oManager = $oDoctrine->getManager();
 
-            $oMemberRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
+	            $oMemberRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
 
-            // check: if the user who's registering is the first of the application, he must be an administrator
-            if ($oMemberRepository->count() == 0 && $oMember->getProfil() != 'admin') {
-            	$oFlashBag->add('user_flash', 'First user registered must be an admin');
-            }
+	            // check: if the user who's registering is the first of the application, he must be an administrator
+	            if ($oMemberRepository->count() == 0 && $oMember->getProfil() != 'admin') {
+	            	$sError = 'Le premier membre inscrit du site doit absolument être un administrateur';
 
-            // set some values (NOTE: force activation for the moment)
-            $oMember->setMdp($sCryptedPassword);
-            $oMember->setActivation('ok');
+	            	$oFlashBag->add('user_flash', $sError);
+	            	// switch save process
+	            	throw new MemberControllerException($sError);
+	            }
 
-            $oManager->persist($oMember);
-            $oManager->flush(); 
+	            // set some values (NOTE: force activation for the moment)
+	            $oMember->setMdp($sCryptedPassword);
+	            $oMember->setActivation('ok');
 
-            // set the member in session, and redirect to index page
-            $this->get('session')->set('member_id', $oMember->getId());
-            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
-            $oResponse = $this->redirect($sUrlToIndex);
-	    } else {
+	            $oManager->persist($oMember);
+	            $oManager->flush(); 
+
+	            // set the member in session, and redirect to index page
+	            $this->get('session')->set('member_id', $oMember->getId());
+	            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
+	            $oResponse = $this->redirect($sUrlToIndex);
+		    }
+	    } catch (MemberControllerException $e) {
 	    	// construct form view
 			$aRenderingData = array(
 				'form_register_member' => $oFormRegister->createView()
@@ -142,4 +150,29 @@ class MemberController extends Controller {
 
         return $oResponse;
     }
+
+    /**
+     *
+     */
+    public function logoutAction() {
+    	$oSession = $this->get('session');
+    	$oFlashBag = $oSession->getFlashBag();
+
+    	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+
+    	// check that there is a user connected
+    	if ($oAuthentifier->isVisitor()) {
+    	// add a error message through flashbag
+    		$oFlashBag->add('user_flash', 'Aucun membre connecté');
+    	} else {
+    	// remove member_id from session
+    		$oSession->clear();
+    	}
+
+    	$sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
+	    
+	    return $this->redirect($sUrlToIndex);
+    }
 }
+
+class MemberControllerException extends \Exception {};
