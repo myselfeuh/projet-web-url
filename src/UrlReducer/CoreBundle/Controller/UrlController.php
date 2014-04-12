@@ -7,12 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use UrlReducer\CoreBundle\Entity\Url;
 use UrlReducer\CoreBundle\Entity\Membre;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class UrlController extends Controller {
     /**
      * 
      */
-    public function generateReducedUrlAction() {
-        $oRequest = $this->getRequest();
+    public function generateReducedUrlAction(Request $oRequest) {
+        $aRenderingData = array();
 
         $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
         $oMember = $oAuthentifier->getMember();
@@ -25,37 +27,35 @@ class UrlController extends Controller {
 
         $oFormUrl = $oFormBuilder->getForm();
 
-        if ($oRequest->getMethod() == 'POST') {
-            $oFormUrl->bind($oRequest);
+        $oFormUrl->handleRequest($oRequest);
 
-            if ($oFormUrl->isValid()) {
-                $sSourceUrl = $oFormUrl->getData()->getSource();
+        if ($oFormUrl->isValid()) {
+            $sSourceUrl = $oFormUrl->getData()->getSource();
 
-                $oSession = $this->get('session');
-                $iMemberId = $oSession->get('member_id');
+            $oSession = $this->get('session');
+            $iMemberId = $oSession->get('member_id');
 
-                $oDoctrine = $this->getDoctrine();
-                $oManager = $oDoctrine->getManager();
+            $oDoctrine = $this->getDoctrine();
+            $oManager = $oDoctrine->getManager();
 
-                $sShortUrl = $this->reduceUrl($sSourceUrl);
+            $sEncryptedUrl = $this->reduceUrl($sSourceUrl, $oMember);
 
-                // we only need to set the short url, the real one was bind through oFormUrl
-                $oUrl->setCourte($sShortUrl);
-                $oUrl->setAuteur($oMember);
+            // we only need to set the short url, the real one was bind through oFormUrl
+            $oUrl->setCourte($sEncryptedUrl);
+            $oUrl->setAuteur($oMember);
 
-                // $oManager->persist($oUrl);
-                $oManager->flush();                     
-            }
+            $aRenderingData['reduced_url'] = $this->getReducedUrl($sEncryptedUrl);
+
+            $oManager->persist($oUrl);
+            $oManager->flush();                     
         }
 
-        $aResponseData = array(
-            'form_generate_url' => $oFormUrl->createView(),
-            'member'            => $oAuthentifier->getMember()
-        );
+        $aRenderingData['form_generate_url'] = $oFormUrl->createView();
+        $aRenderingData['member']            = $oMember;
         
         return $this->render(
             'UrlReducerCoreBundle:Url:home.html.twig', 
-            $aResponseData
+            $aRenderingData
         );
     }
 
@@ -77,7 +77,7 @@ class UrlController extends Controller {
 
         } else {
         // url not found, back to index 
-            $sUrlToIndex = $this->generateUrl('url_reducer_core_index');
+            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
             $oRedirection = $this->redirect($sUrlToIndex);
 
             // @TODO message flash
@@ -91,9 +91,14 @@ class UrlController extends Controller {
      *
      * @param String - the real url
      */
-    private function reduceUrl($sUrl) {
-        $sCryptedUrl = crypt($sUrl, 'CRYPT_BLOWFISH');
-        $sReducedUrl = substr($sCryptedUrl, 0, 8);
+    private function reduceUrl($sUrl, $oMember = null) {
+        if ($oMember != null) {
+            $sCryptedUrl = password_hash($sUrl, PASSWORD_BCRYPT, array('salt', serialize($oMember)));
+        } else {
+            $sCryptedUrl = password_hash($sUrl, PASSWORD_BCRYPT);
+        }
+
+        $sReducedUrl = substr($sCryptedUrl, 10, 4) . substr($sCryptedUrl, -4);
 
         return $sReducedUrl;
     }

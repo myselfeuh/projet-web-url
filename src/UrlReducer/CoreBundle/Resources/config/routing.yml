@@ -6,14 +6,20 @@ url_reducer_core_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: UrlReducerCoreBundle:Default:index }
 
-url_reducer_core_index:
+url_reducer_core_url_generate:
     pattern:  /
     defaults: { _controller: UrlReducerCoreBundle:Url:generateReducedUrl }
 
-url_reducer_core_gogogo:
+url_reducer_core_member_login:
+    pattern:  /login
+    defaults: { _controller: UrlReducerCoreBundle:Member:login }
+
+url_reducer_core_member_register:
+    pattern:  /register
+    defaults: { _controller: UrlReducerCoreBundle:Member:register }
+
+# Must be the last route declared to not match each static urls
+url_reducer_core_url_go:
     pattern:  /{sUrl}
     defaults: { _controller: UrlReducerCoreBundle:Url:goToSourceUrl }
 
-url_reducer_core_login:
-    pattern:  /login
-    defaults: { _controller: UrlReducerCoreBundle:Member:login }

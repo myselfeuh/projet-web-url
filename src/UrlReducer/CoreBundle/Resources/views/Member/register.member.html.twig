@@ -1,0 +1,13 @@
+<h1>inscription</h1>
+
+<div>
+{% for label, flashes in app.session.flashbag.all %}
+    {% for flash in flashes %}
+        <div class="alert alert-{{ label }}">
+            {{ flash }}
+        </div>
+    {% endfor %}
+{% endfor %}
+</div>
+
+<div>{{ form(form_register_member) }}</div>
