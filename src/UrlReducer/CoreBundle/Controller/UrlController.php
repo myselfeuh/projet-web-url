@@ -6,8 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
 use UrlReducer\CoreBundle\Entity\User;
-
+use UrlReducer\CoreBundle\Service\Authentifier;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class UrlControllerException extends \Exception {};
 
@@ -56,7 +57,7 @@ class UrlController extends Controller {
                     throw new UrlControllerException;
                 } else {
                 // just display the existing reduced one
-                    $aRenderingData['reduced_url'] = $this->getReducedUrl($oExistingUrl->getCourte());
+                    $aRenderingData['reduced_url'] = $this->urlify($oExistingUrl->getCourte());
                 }
             } catch (UrlControllerException $e) {
                 $oManager = $oDoctrine->getManager();
@@ -66,7 +67,7 @@ class UrlController extends Controller {
                 $oUrl->setCourte($sEncryptedUrl);
                 $oUrl->setAuteur($oUser);
 
-                $aRenderingData['reduced_url'] = $this->getReducedUrl($sEncryptedUrl);
+                $aRenderingData['reduced_url'] = $this->urlify($sEncryptedUrl);
 
                 $oManager->persist($oUrl);
                 $oManager->flush();    
@@ -110,6 +111,52 @@ class UrlController extends Controller {
     }
 
     /**
+     *
+     */
+    public function listAction() {
+        // get the current member
+        $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+
+        try {
+            if ($oAuthentifier->getStatus() == Authentifier::IS_VISITOR) {
+                throw new UrlControllerException;
+            } else {
+                $oUser = $oAuthentifier->getUser();
+
+                $oDoctrine = $this->getDoctrine();
+                $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
+                
+                if ($oAuthentifier->getStatus() == Authentifier::IS_ADMIN) {
+                    $aUrls = $oUrlRepository->findAll();
+                } else {
+                    $aUrls = $oUrlRepository->findByAuteur($oUser->getId());
+                }
+                
+                $oResponse = $this->render(
+                    'UrlReducerCoreBundle:Url:list.url.html.twig', 
+                    array('urls' => $aUrls)
+                );
+            }
+        } catch (UrlControllerException $e) {
+            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
+            $oResponse = $this->redirect($sUrlToIndex);
+
+            $this->get('session')
+                 ->getFlashBag()
+                 ->add('level access error', "Vous n'avez pas les droits suffisants");
+        }
+
+        return $oResponse;
+    }
+
+    /**
+     *
+     */
+    public function deleteAction($iId) {
+
+    }
+
+    /**
      * Encrypt url to short url, with salt by user_id (if he is connected)
      *
      * @param String - the real url
@@ -129,7 +176,7 @@ class UrlController extends Controller {
      *
      * @param String - the encrypted url
      */
-    private function getReducedUrl($sShortUrl) {
+    private function urlify($sShortUrl) {
         $oServerData = $this->getRequest()->server;
         return $oServerData->get('HTTP_REFERER') . $sShortUrl;
     }

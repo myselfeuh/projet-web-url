@@ -1,21 +1,24 @@
 {# src/UrlReducer/CoreBundle/Resources/views/Url/home.html.twig #}
+{% extends 'UrlReducerCoreBundle::layout.html.twig' %}
 
-<html>
-	<head></head>
-	<body>
-		<div id="menu">
-		    {{ render(controller('UrlReducerCoreBundle:User:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
-		</div>
+{% block title %}Bienvenue sur cet incroyable site de réduction d'url{% endblock %}
 
-		{% if reduced_url is defined %} 
-			<a href="{{ reduced_url }}">{{ reduced_url }}</a>
-		{% endif %}
-		
-		{{ form(form_generate_url) }}
+{% block menu %}
+	{{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
+{% endblock %}
 
-		{% if short_url is defined %} 
-			{{ short_url }}
-		{% endif %}
-	</body>
-</html>
+{% block sidebar %}
+	{{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
+{% endblock %}
 
+{% block body %}
+    {% if reduced_url is defined %} 
+    	<a href="{{ reduced_url }}">{{ reduced_url }}</a>
+    {% endif %}
+    
+    {{ form(form_generate_url) }}
+
+    {% if short_url is defined %} 
+    	{{ short_url }}
+    {% endif %}
+{% endblock %}

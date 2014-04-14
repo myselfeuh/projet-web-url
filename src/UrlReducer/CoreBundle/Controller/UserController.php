@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
 use UrlReducer\CoreBundle\Entity\User;
-use UrlReducer\CoreBundle\Service\Authentifier;;
-
+use UrlReducer\CoreBundle\Service\Authentifier;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller {
@@ -74,12 +73,10 @@ class UserController extends Controller {
     public function registerAction(Request $oRequest) {
 	    try {
 	    	// initialization
-	    	$oResponse = null;
 	    	$oUser = new User;
 
 	    	// get some services
-	    	$oSession = $this->get('session');
-		    $oFlashBag = $oSession->getFlashBag();
+		    $oFlashBag = $this->get('session')->getFlashBag();
 
 			$oFormBuilder = $this->createFormBuilder($oUser)
 			                     ->add('nom', 'text')
@@ -108,7 +105,7 @@ class UserController extends Controller {
 
 		    	// crypt user's password
 		    	$sPassword 	 = $oUser->getMdp();
-	        	$sCryptedPassword = crypt($sPassword, 'user_salt');
+	        	$sCryptedPassword = crypt($sPassword, $oUser->getId());
 
 	        	// get some services
 	        	$oDoctrine = $this->getDoctrine();
@@ -155,6 +152,13 @@ class UserController extends Controller {
     /**
      *
      */
+    public function modifyAction(Request $oRequest) {
+
+    }
+
+    /**
+     *
+     */
     public function logoutAction() {
     	$oSession = $this->get('session');
     	$oFlashBag = $oSession->getFlashBag();
@@ -173,86 +177,6 @@ class UserController extends Controller {
     	$sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
 	    
 	    return $this->redirect($sUrlToIndex);
-    }
-
-    /**
-     *
-     */
-    public function menuAction($sRoute) {
-    	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
-
-    	$aUrls = array();
-
-    	switch ($oAuthentifier->getStatus()) {
-    		case Authentifier::IS_VISITOR:
-    			$sMessage = 'Bienvenue';
-    			
-    			$aUrls['url_reducer_core_user_login'] 	= 'login';
-    			$aUrls['url_reducer_core_user_register'] 	= 'inscription';
-    			break;
-    		case Authentifier::IS_ADMIN:
-    			$aUrls['url_reducer_core_user_account'] 	= 'espace administration';
-    		case Authentifier::IS_MEMBER:
-    			$sMessage = 'Bonjour, ' . $oAuthentifier->getUser()->getPseudo();
-    			
-    			$aUrls['url_reducer_core_user_account'] = 'mon compte';
-    			$aUrls['url_reducer_core_user_logout'] = 'logout';
-    			break;
-    	}
-
-    	if (array_key_exists($sRoute, $aUrls)) {
-    		unset($aUrls[$sRoute]);
-    	}
-
-    	$oResponse = $this->render(
-            'UrlReducerCoreBundle:User:menu.user.html.twig',
-            array(
-            	'menu_message' => $sMessage,
-            	'menu_urls' => $aUrls
-            )
-        );
-
-        return $oResponse;
-    }
-
-    /**
-     *
-     */
-    public function userMenuAction($sRoute) {
-    	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
-
-    	$aUrls = array();
-
-    	switch ($oAuthentifier->getStatus()) {
-    		case Authentifier::IS_VISITOR:
-    			$sMessage = 'Bienvenue';
-    			
-    			$aUrls['url_reducer_core_user_login'] 	= 'login';
-    			$aUrls['url_reducer_core_user_register'] 	= 'inscription';
-    			break;
-    		case Authentifier::ADMIN_user:
-    			$aUrls['url_reducer_core_user_admin'] 	= 'espace administration';
-    		case Authentifier::BASIC_user:
-    			$sMessage = 'Bonjour, ' . $oAuthentifier->getUser()->getPseudo();
-    			
-    			$aUrls['url_reducer_core_user_account'] = 'mon compte';
-    			$aUrls['url_reducer_core_user_logout'] = 'logout';
-    			break;
-    	}
-
-    	if (array_key_exists($sRoute, $aUrls)) {
-    		unset($aUrls[$sRoute]);
-    	}
-
-    	$oResponse = $this->render(
-            'UrlReducerCoreBundle:User:menu.user.html.twig',
-            array(
-            	'menu_message' => $sMessage,
-            	'menu_urls' => $aUrls
-            )
-        );
-
-        return $oResponse;
     }
 }
 

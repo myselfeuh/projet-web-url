@@ -10,32 +10,47 @@ url_reducer_core_url_generate:
     pattern:  /
     defaults: { _controller: UrlReducerCoreBundle:Url:generateReducedUrl }
 
+url_reducer_core_url_list:
+    pattern:  /url/list
+    defaults: { _controller: UrlReducerCoreBundle:Url:list }
+
 url_reducer_core_url_delete:
-    pattern:  /url/delete
+    pattern:  /url/delete/{iId}
     defaults: { _controller: UrlReducerCoreBundle:Url:delete }
 
 url_reducer_core_user_login:
-    pattern:  /login
+    pattern:  /user/login
     defaults: { _controller: UrlReducerCoreBundle:User:login }
 
 url_reducer_core_user_logout:
-    pattern:  /logout
+    pattern:  /user/logout
     defaults: { _controller: UrlReducerCoreBundle:User:logout }
 
 url_reducer_core_user_register:
-    pattern:  /register
+    pattern:  /user/register
     defaults: { _controller: UrlReducerCoreBundle:User:register }
+
+url_reducer_core_user_modify:
+    pattern:  /user/modify
+    defaults: { _controller: UrlReducerCoreBundle:User:modify }
+
+url_reducer_core_user_delete:
+    pattern:  /user/delete
+    defaults: { _controller: UrlReducerCoreBundle:User:delete }
 #
 url_reducer_core_user_menu:
-    pattern:  /user/menu
-    defaults: { _controller: UrlReducerCoreBundle:User:userMenu }
+    pattern:  /menu/user
+    defaults: { _controller: UrlReducerCoreBundle:Menu:user }
 
 url_reducer_core_member_menu:
-    pattern:  /member/menu
-    defaults: { _controller: UrlReducerCoreBundle:User:memberMenu }
+    pattern:  /menu/member
+    defaults: { _controller: UrlReducerCoreBundle:Menu:member }
+
+url_reducer_core_stats:
+    pattern:  /stats
+    defaults: { _controller: UrlReducerCoreBundle:Stat:display }
 
 # Must be the last route declared to not match each static urls
 url_reducer_core_url_go:
     pattern:  /{sUrl}
     defaults: { _controller: UrlReducerCoreBundle:Url:goToSourceUrl }
-

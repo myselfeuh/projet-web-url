@@ -3,7 +3,7 @@
 <h1>login</h1>
 
 <div id="menu">
-    {{ render(controller('UrlReducerCoreBundle:User:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
+    {{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
 </div>
 <div>
 {% for label, flashes in app.session.flashbag.all %}
