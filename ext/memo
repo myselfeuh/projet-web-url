@@ -1,0 +1,14 @@
+# sous menu membre (admin inclus)
+- listing des urls du membre (suppression, stat par url, si possible)
+- modification du compte
+- statistiques de ses urls
+
+# sous menu admin
+- idem que membre
+- gestion des membres
+- gestion globale des urls
+- statistiques globales
+
+# les statistiques
+- nombre d'utilisation de cette url par jour (url unique) - vague de la main
+- pourcentage d'utilisation (de chaque url par rapport au total d'utilisation de toutes les urls) - calendos qui fouette

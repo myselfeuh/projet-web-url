@@ -26,17 +26,13 @@ url_reducer_core_member_register:
     pattern:  /register
     defaults: { _controller: UrlReducerCoreBundle:Member:register }
 #
-url_reducer_core_member_account_menu:
+url_reducer_core_member:
+    pattern:  /menu
+    defaults: { _controller: UrlReducerCoreBundle:Member:Menu }
+
+url_reducer_core_member_account:
     pattern:  /member/menu
-    defaults: { _controller: UrlReducerCoreBundle:Member:displayMenu }
-
-url_reducer_core_member_account_modify:
-    pattern:  /member/account/modify
-    defaults: { _controller: UrlReducerCoreBundle:Member:modify }
-
-url_reducer_core_member_admin:
-    pattern:  /member/admin
-    defaults: { _controller: UrlReducerCoreBundle:Member:admin }
+    defaults: { _controller: UrlReducerCoreBundle:Member:memberMenu }
 
 url_reducer_core_member_url_list:
     pattern:  /member/url/list

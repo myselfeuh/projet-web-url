@@ -191,11 +191,51 @@ class MemberController extends Controller {
     			$aUrls['url_reducer_core_member_register'] 	= 'inscription';
     			break;
     		case Authentifier::ADMIN_MEMBER:
-    			$aUrls['url_reducer_core_member_admin'] 	= 'administrateur';
+    			$aUrls['url_reducer_core_member_account'] 	= 'espace administration';
     		case Authentifier::BASIC_MEMBER:
     			$sMessage = 'Bonjour, ' . $oAuthentifier->getMember()->getPseudo();
     			
-    			$aUrls['url_reducer_core_member_account_menu'] = 'mon compte';
+    			$aUrls['url_reducer_core_member_account'] = 'mon compte';
+    			$aUrls['url_reducer_core_member_logout'] = 'logout';
+    			break;
+    	}
+
+    	if (array_key_exists($sRoute, $aUrls)) {
+    		unset($aUrls[$sRoute]);
+    	}
+
+    	$oResponse = $this->render(
+            'UrlReducerCoreBundle:Member:menu.member.html.twig',
+            array(
+            	'menu_message' => $sMessage,
+            	'menu_urls' => $aUrls
+            )
+        );
+
+        return $oResponse;
+    }
+
+    /**
+     *
+     */
+    public function memberMenuAction($sRoute) {
+    	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+
+    	$aUrls = array();
+
+    	switch ($oAuthentifier->getStatus()) {
+    		case Authentifier::IS_VISITOR:
+    			$sMessage = 'Bienvenue';
+    			
+    			$aUrls['url_reducer_core_member_login'] 	= 'login';
+    			$aUrls['url_reducer_core_member_register'] 	= 'inscription';
+    			break;
+    		case Authentifier::ADMIN_MEMBER:
+    			$aUrls['url_reducer_core_member_admin'] 	= 'espace administration';
+    		case Authentifier::BASIC_MEMBER:
+    			$sMessage = 'Bonjour, ' . $oAuthentifier->getMember()->getPseudo();
+    			
+    			$aUrls['url_reducer_core_member_account'] = 'mon compte';
     			$aUrls['url_reducer_core_member_logout'] = 'logout';
     			break;
     	}
