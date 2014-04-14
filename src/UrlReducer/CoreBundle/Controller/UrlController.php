@@ -9,6 +9,8 @@ use UrlReducer\CoreBundle\Entity\Membre;
 
 use Symfony\Component\HttpFoundation\Request;
 
+class UrlControllerException extends \Exception {};
+
 class UrlController extends Controller {
     /**
      * 
@@ -26,28 +28,49 @@ class UrlController extends Controller {
                              ->add('générer', 'submit');
 
         $oFormUrl = $oFormBuilder->getForm();
-
         $oFormUrl->handleRequest($oRequest);
 
         if ($oFormUrl->isValid()) {
-            $sSourceUrl = $oFormUrl->getData()->getSource();
+            try {
+                $sSourceUrl = $oFormUrl->getData()->getSource();
+                $oDoctrine = $this->getDoctrine();
 
-            $oSession = $this->get('session');
-            $iMemberId = $oSession->get('member_id');
+                // try to retrieve an existing reduced url
+                $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
+                $aSearchCriteria = array('source' => $sSourceUrl);
 
-            $oDoctrine = $this->getDoctrine();
-            $oManager = $oDoctrine->getManager();
+                if ($oMember != null) {
+                    $aSearchCriteria['auteur'] = $oMember->getId();
+                }
 
-            $sEncryptedUrl = $this->reduceUrl($sSourceUrl, $oMember);
+                $oExistingUrl = $oUrlRepository->findOneBy($aSearchCriteria);
 
-            // we only need to set the short url, the real one was bind through oFormUrl
-            $oUrl->setCourte($sEncryptedUrl);
-            $oUrl->setAuteur($oMember);
+                if ($oExistingUrl == null) {
+                // if no url with that source, let create one
+                    throw new UrlControllerException;
+                } else if (
+                    $oMember != null 
+                    && $oExistingUrl->getAuteur() == $oMember->getId()
+                ) {
+                // a member must have his own reduced urls, so let create one
+                    throw new UrlControllerException;
+                } else {
+                // just display the existing reduced one
+                    $aRenderingData['reduced_url'] = $this->getReducedUrl($oExistingUrl->getCourte());
+                }
+            } catch (UrlControllerException $e) {
+                $oManager = $oDoctrine->getManager();
+                $sEncryptedUrl = $this->reduceUrl($sSourceUrl, $oMember);
 
-            $aRenderingData['reduced_url'] = $this->getReducedUrl($sEncryptedUrl);
+                // we only need to set the short url, the real one was bind through oFormUrl
+                $oUrl->setCourte($sEncryptedUrl);
+                $oUrl->setAuteur($oMember);
 
-            $oManager->persist($oUrl);
-            $oManager->flush();                     
+                $aRenderingData['reduced_url'] = $this->getReducedUrl($sEncryptedUrl);
+
+                $oManager->persist($oUrl);
+                $oManager->flush();    
+            }
         }
 
         $aRenderingData['form_generate_url'] = $oFormUrl->createView();
@@ -79,7 +102,9 @@ class UrlController extends Controller {
             $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
             $oResponse = $this->redirect($sUrlToIndex);
 
-            $this->get('session')->getFlashBag()->add('url error', "L'url demandée n'a pas été trouvée");
+            $this->get('session')
+                 ->getFlashBag()
+                 ->add('url error', "L'url demandée n'a pas été trouvée");
         }
 
         return $oResponse;
