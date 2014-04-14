@@ -5,7 +5,7 @@
 <div>
 
 <div id="menu">
-    {{ render(controller('UrlReducerCoreBundle:Member:menu')) }}
+    {{ render(controller('UrlReducerCoreBundle:Member:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
 </div>
 
 {% for label, flashes in app.session.flashbag.all %}

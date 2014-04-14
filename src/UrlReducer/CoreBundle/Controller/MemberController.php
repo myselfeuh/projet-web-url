@@ -178,11 +178,8 @@ class MemberController extends Controller {
     /**
      *
      */
-    public function menuAction(Request $oRequest) {
+    public function menuAction($sRoute) {
     	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
-    	$oRouter = $this->get('router');
-
-    	var_dump($oRouter);
 
     	$aUrls = array();
 
@@ -203,10 +200,8 @@ class MemberController extends Controller {
     			break;
     	}
 
-    	
-
-    	if (array_key_exists($sCurrentRoute, $aUrls)) {
-    		unset($aUrls[$sCurrentRoute]);
+    	if (array_key_exists($sRoute, $aUrls)) {
+    		unset($aUrls[$sRoute]);
     	}
 
     	$oResponse = $this->render(
