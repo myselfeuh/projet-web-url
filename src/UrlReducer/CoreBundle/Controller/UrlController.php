@@ -50,7 +50,7 @@ class UrlController extends Controller {
                     throw new UrlControllerException;
                 } else if (
                     $oMember != null 
-                    && $oExistingUrl->getAuteur() == $oMember->getId()
+                    && $oExistingUrl->getAuteur()->getId() != $oMember->getId()
                 ) {
                 // a member must have his own reduced urls, so let create one
                     throw new UrlControllerException;
@@ -74,7 +74,6 @@ class UrlController extends Controller {
         }
 
         $aRenderingData['form_generate_url'] = $oFormUrl->createView();
-        $aRenderingData['member_menu']       = $oAuthentifier->generateMemberMenuComponents();
         
         return $this->render(
             'UrlReducerCoreBundle:Url:home.html.twig', 
