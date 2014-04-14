@@ -1,9 +1,9 @@
-{# src/UrlReducer/CoreBundle/Resources/views/Member/login.member.html.twig #}
+{# src/UrlReducer/CoreBundle/Resources/views/User/login.user.html.twig #}
 
 <h1>login</h1>
 
 <div id="menu">
-    {{ render(controller('UrlReducerCoreBundle:Member:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
+    {{ render(controller('UrlReducerCoreBundle:User:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
 </div>
 <div>
 {% for label, flashes in app.session.flashbag.all %}
@@ -14,4 +14,4 @@
     {% endfor %}
 {% endfor %}
 </div>
-<div>{{ form(form_login_member) }}</div>
+<div>{{ form(form_login_user) }}</div>

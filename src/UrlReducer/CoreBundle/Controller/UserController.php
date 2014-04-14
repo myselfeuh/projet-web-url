@@ -5,12 +5,12 @@ namespace UrlReducer\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
-use UrlReducer\CoreBundle\Entity\Membre;
+use UrlReducer\CoreBundle\Entity\User;
 use UrlReducer\CoreBundle\Service\Authentifier;;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class MemberController extends Controller {
+class UserController extends Controller {
 	/**
      * 
      */
@@ -36,17 +36,17 @@ class MemberController extends Controller {
 	    	$sPseudo 	 = $oFormLoginData['pseudo'];
 	    	$sPassword 	 = $oFormLoginData['password'];
 
-	   		$oMemberRepository = $this->getDoctrine()->getRepository('UrlReducerCoreBundle:Membre');
-        	$oMember 		   = $oMemberRepository->findOneByPseudo($sPseudo);
+	   		$oUserRepository = $this->getDoctrine()->getRepository('UrlReducerCoreBundle:User');
+        	$oUser 		   = $oUserRepository->findOneByPseudo($sPseudo);
 
         	$sCryptedPassword = crypt($sPassword, 'user_salt');
 
-        	if ($oMember == null) {
+        	if ($oUser == null) {
         		$oFlashBag->add('user_flash', 'No user found');
-        	} else if ($oMember->getMdp() != $sCryptedPassword) {
+        	} else if ($oUser->getMdp() != $sCryptedPassword) {
         		$oFlashBag->add('user_flash', 'Wrong password');
         	} else {
-        		$oSession->set('member_id', $oMember->getId());
+        		$oSession->set('user_id', $oUser->getId());
         		$bLoginIsValidated = true;
         	}
 	    }
@@ -56,11 +56,11 @@ class MemberController extends Controller {
 	    	$oResponse = $this->redirect($sUrlToIndex);
 	    } else {
 			$aRenderingData = array(
-				'form_login_member' => $oFormLogin->createView()
+				'form_login_user' => $oFormLogin->createView()
 			);
 
 			$oResponse = $this->render(
-	            'UrlReducerCoreBundle:Member:login.member.html.twig',
+	            'UrlReducerCoreBundle:User:login.user.html.twig',
 	            $aRenderingData
         	);
 	    }
@@ -75,13 +75,13 @@ class MemberController extends Controller {
 	    try {
 	    	// initialization
 	    	$oResponse = null;
-	    	$oMember = new Membre;
+	    	$oUser = new User;
 
 	    	// get some services
 	    	$oSession = $this->get('session');
 		    $oFlashBag = $oSession->getFlashBag();
 
-			$oFormBuilder = $this->createFormBuilder($oMember)
+			$oFormBuilder = $this->createFormBuilder($oUser)
 			                     ->add('nom', 'text')
 			                     ->add('prenom', 'text')
 			                     ->add('pseudo', 'text')
@@ -90,7 +90,7 @@ class MemberController extends Controller {
 			                     ->add('profil', 'choice', 
 			                     	array('choices' => 
 			                     		array(
-			                     			'membre' => 'Membre', 
+			                     			'user' => 'Membre', 
 			                     			'admin'  => 'Administrateur'
 			                     		)
 									))
@@ -101,50 +101,50 @@ class MemberController extends Controller {
 		    $oFormRegister->handleRequest($oRequest);
 
 		    if (!$oFormRegister->isValid()) {
-		    	throw new MemberControllerException('Form has not yet been submitted');
+		    	throw new UserControllerException('Form has not yet been submitted');
 		    } else {
-		    	// retrieve form data as a Member object
-		    	$oMember = $oFormRegister->getData();
+		    	// retrieve form data as a User object
+		    	$oUser = $oFormRegister->getData();
 
 		    	// crypt user's password
-		    	$sPassword 	 = $oMember->getMdp();
+		    	$sPassword 	 = $oUser->getMdp();
 	        	$sCryptedPassword = crypt($sPassword, 'user_salt');
 
 	        	// get some services
 	        	$oDoctrine = $this->getDoctrine();
 	            $oManager = $oDoctrine->getManager();
 
-	            $oMemberRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
+	            $oUserRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:User');
 
 	            // check: if the user who's registering is the first of the application, he must be an administrator
-	            if ($oMemberRepository->count() == 0 && $oMember->getProfil() != 'admin') {
+	            if ($oUserRepository->count() == 0 && $oUser->getProfil() != 'admin') {
 	            	$sError = 'Le premier membre inscrit du site doit absolument être un administrateur';
 
 	            	$oFlashBag->add('user_flash', $sError);
 	            	// switch save process
-	            	throw new MemberControllerException($sError);
+	            	throw new UserControllerException($sError);
 	            }
 
 	            // set some values (NOTE: force activation for the moment)
-	            $oMember->setMdp($sCryptedPassword);
-	            $oMember->setActivation('ok');
+	            $oUser->setMdp($sCryptedPassword);
+	            $oUser->setActivation('ok');
 
-	            $oManager->persist($oMember);
+	            $oManager->persist($oUser);
 	            $oManager->flush(); 
 
-	            // set the member in session, and redirect to index page
-	            $this->get('session')->set('member_id', $oMember->getId());
+	            // set the user in session, and redirect to index page
+	            $this->get('session')->set('user_id', $oUser->getId());
 	            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
 	            $oResponse = $this->redirect($sUrlToIndex);
 		    }
-	    } catch (MemberControllerException $e) {
+	    } catch (UserControllerException $e) {
 	    	// construct form view
 			$aRenderingData = array(
-				'form_register_member' => $oFormRegister->createView()
+				'form_register_user' => $oFormRegister->createView()
 			);
 
 	    	$oResponse = $this->render(
-	            'UrlReducerCoreBundle:Member:register.member.html.twig',
+	            'UrlReducerCoreBundle:User:register.user.html.twig',
 	            $aRenderingData
 	        );
 	    }
@@ -166,7 +166,7 @@ class MemberController extends Controller {
     	// add a error message through flashbag
     		$oFlashBag->add('user_flash', 'Aucun membre connecté');
     	} else {
-    	// remove member_id from session
+    	// remove user_id from session
     		$oSession->clear();
     	}
 
@@ -187,16 +187,16 @@ class MemberController extends Controller {
     		case Authentifier::IS_VISITOR:
     			$sMessage = 'Bienvenue';
     			
-    			$aUrls['url_reducer_core_member_login'] 	= 'login';
-    			$aUrls['url_reducer_core_member_register'] 	= 'inscription';
+    			$aUrls['url_reducer_core_user_login'] 	= 'login';
+    			$aUrls['url_reducer_core_user_register'] 	= 'inscription';
     			break;
-    		case Authentifier::ADMIN_MEMBER:
-    			$aUrls['url_reducer_core_member_account'] 	= 'espace administration';
-    		case Authentifier::BASIC_MEMBER:
-    			$sMessage = 'Bonjour, ' . $oAuthentifier->getMember()->getPseudo();
+    		case Authentifier::IS_ADMIN:
+    			$aUrls['url_reducer_core_user_account'] 	= 'espace administration';
+    		case Authentifier::IS_MEMBER:
+    			$sMessage = 'Bonjour, ' . $oAuthentifier->getUser()->getPseudo();
     			
-    			$aUrls['url_reducer_core_member_account'] = 'mon compte';
-    			$aUrls['url_reducer_core_member_logout'] = 'logout';
+    			$aUrls['url_reducer_core_user_account'] = 'mon compte';
+    			$aUrls['url_reducer_core_user_logout'] = 'logout';
     			break;
     	}
 
@@ -205,7 +205,7 @@ class MemberController extends Controller {
     	}
 
     	$oResponse = $this->render(
-            'UrlReducerCoreBundle:Member:menu.member.html.twig',
+            'UrlReducerCoreBundle:User:menu.user.html.twig',
             array(
             	'menu_message' => $sMessage,
             	'menu_urls' => $aUrls
@@ -218,7 +218,7 @@ class MemberController extends Controller {
     /**
      *
      */
-    public function memberMenuAction($sRoute) {
+    public function userMenuAction($sRoute) {
     	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
 
     	$aUrls = array();
@@ -227,16 +227,16 @@ class MemberController extends Controller {
     		case Authentifier::IS_VISITOR:
     			$sMessage = 'Bienvenue';
     			
-    			$aUrls['url_reducer_core_member_login'] 	= 'login';
-    			$aUrls['url_reducer_core_member_register'] 	= 'inscription';
+    			$aUrls['url_reducer_core_user_login'] 	= 'login';
+    			$aUrls['url_reducer_core_user_register'] 	= 'inscription';
     			break;
-    		case Authentifier::ADMIN_MEMBER:
-    			$aUrls['url_reducer_core_member_admin'] 	= 'espace administration';
-    		case Authentifier::BASIC_MEMBER:
-    			$sMessage = 'Bonjour, ' . $oAuthentifier->getMember()->getPseudo();
+    		case Authentifier::ADMIN_user:
+    			$aUrls['url_reducer_core_user_admin'] 	= 'espace administration';
+    		case Authentifier::BASIC_user:
+    			$sMessage = 'Bonjour, ' . $oAuthentifier->getUser()->getPseudo();
     			
-    			$aUrls['url_reducer_core_member_account'] = 'mon compte';
-    			$aUrls['url_reducer_core_member_logout'] = 'logout';
+    			$aUrls['url_reducer_core_user_account'] = 'mon compte';
+    			$aUrls['url_reducer_core_user_logout'] = 'logout';
     			break;
     	}
 
@@ -245,7 +245,7 @@ class MemberController extends Controller {
     	}
 
     	$oResponse = $this->render(
-            'UrlReducerCoreBundle:Member:menu.member.html.twig',
+            'UrlReducerCoreBundle:User:menu.user.html.twig',
             array(
             	'menu_message' => $sMessage,
             	'menu_urls' => $aUrls
@@ -256,4 +256,4 @@ class MemberController extends Controller {
     }
 }
 
-class MemberControllerException extends \Exception {};
+class UserControllerException extends \Exception {};

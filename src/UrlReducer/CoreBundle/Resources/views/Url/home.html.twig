@@ -4,7 +4,7 @@
 	<head></head>
 	<body>
 		<div id="menu">
-		    {{ render(controller('UrlReducerCoreBundle:Member:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
+		    {{ render(controller('UrlReducerCoreBundle:User:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
 		</div>
 
 		{% if reduced_url is defined %} 

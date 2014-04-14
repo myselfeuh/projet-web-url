@@ -1,11 +1,11 @@
-{# src/UrlReducer/CoreBundle/Resources/views/Member/register.member.html.twig #}
+{# src/UrlReducer/CoreBundle/Resources/views/User/register.user.html.twig #}
 
 <h1>inscription</h1>
 
 <div>
 
 <div id="menu">
-    {{ render(controller('UrlReducerCoreBundle:Member:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
+    {{ render(controller('UrlReducerCoreBundle:User:menu', { 'sRoute': app.request.attributes.get('_route') })) }}
 </div>
 
 {% for label, flashes in app.session.flashbag.all %}
@@ -17,4 +17,4 @@
 {% endfor %}
 </div>
 
-<div>{{ form(form_register_member) }}</div>
+<div>{{ form(form_register_user) }}</div>

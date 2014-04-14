@@ -13,7 +13,7 @@
     <field name="source" type="string" column="source" length="1024" nullable="false"/>
     <field name="courte" type="string" column="courte" length="10" nullable="false"/>
     <field name="creation" type="datetime" column="creation" nullable="false"/>
-    <many-to-one field="auteur" target-entity="Membres">
+    <many-to-one field="auteur" target-entity="Users">
       <join-columns>
         <join-column name="auteur" referenced-column-name="id"/>
       </join-columns>

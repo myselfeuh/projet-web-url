@@ -4,7 +4,7 @@ namespace UrlReducer\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use UrlReducer\CoreBundle\Entity\Url;
-use UrlReducer\CoreBundle\Entity\Membre;
+use UrlReducer\CoreBundle\Entity\User;
 
 class DefaultController extends Controller {
     public function phpinfoAction() {
@@ -15,8 +15,8 @@ class DefaultController extends Controller {
     	$oDoctrine = $this->getDoctrine();
     	$oManager = $oDoctrine->getManager();
 
-    	$oMembre = new Membre;
-    	$oMembre->setNom('Penaud')
+    	$oUser = new User;
+    	$oUser->setNom('Penaud')
     		 	->setPrenom('Guillaume')
     		 	->setPseudo('sephres')
     		 	->setMail('guillaume.penaud@gmail.com')
@@ -24,22 +24,22 @@ class DefaultController extends Controller {
     		 	->setActivation('ok')
     		 	->setProfil('admin');
 
-    	$oManager->persist($oMembre);
+    	$oManager->persist($oUser);
 
-    	$oMembreRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
-    	$oMembreRepository->findOneByPseudo('sephres');	
+    	$oUserRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:User');
+    	$oUserRepository->findOneByPseudo('sephres');	
 
     	$oUrl_1 = new Url;
     	$oUrl_1->setSource('http://fr.google.com')
     		   ->setCourte('http://bit.ly.xHt6D')
-    		   ->setAuteur($oMembre);
+    		   ->setAuteur($oUser);
 
     	$oManager->persist($oUrl_1);
 
     	$oUrl_2 = new Url;
     	$oUrl_2->setSource('http://fr.itworks.com')
     		   ->setCourte('hey')
-    		   ->setAuteur($oMembre);
+    		   ->setAuteur($oUser);
 
     	$oManager->persist($oUrl_2);
 

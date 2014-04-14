@@ -8,13 +8,13 @@ class Authentifier {
 	 * Possible status of authentification 
 	 */
 	const IS_VISITOR = 0;
-	const BASIC_MEMBER = 1;
-	const ADMIN_MEMBER = 2;
+	const IS_MEMBER = 1;
+	const IS_ADMIN = 2;
 
 	/**
-	 * The member possibly concerned
+	 * The user possibly concerned
 	 */	
-	private $_oMember = null;
+	private $_oUser = null;
 
 	/**
 	 * The customer status on the site
@@ -22,16 +22,16 @@ class Authentifier {
 	private $_iStatus = Authentifier::IS_VISITOR;
 
 	/**
-	 * Try to retrieve a member from session
+	 * Try to retrieve a user from session
 	 *
 	 * @param Session - the session object 
 	 */
 	public function __construct($oSession, $oDoctrine) {
-		$iMemberId = $oSession->get('member_id');
+		$iUserId = $oSession->get('user_id');
 
-		if (!empty($iMemberId)) {
-			$oMemberRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Membre');
-            $this->_oMember = $oMemberRepository->find($iMemberId);
+		if (!empty($iUserId)) {
+			$oUserRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:User');
+            $this->_oUser = $oUserRepository->find($iUserId);
 		}
 
 		$this->getStatus();
@@ -43,12 +43,12 @@ class Authentifier {
 	 * @return boolean - the customer's status
 	 */
 	public function getStatus() {
-		if ($this->_oMember == null) {
+		if ($this->_oUser == null) {
 			$this->_iStatus = Authentifier::IS_VISITOR;
-		} else if ($this->_oMember->getProfil() == 'admin') {
-			$this->_iStatus = Authentifier::ADMIN_MEMBER;
+		} else if ($this->_oUser->getProfil() == 'admin') {
+			$this->_iStatus = Authentifier::IS_ADMIN;
 		} else {
-			$this->_iStatus = Authentifier::BASIC_MEMBER;
+			$this->_iStatus = Authentifier::IS_MEMBER;
 		}
 
 		return $this->_iStatus;
@@ -59,8 +59,8 @@ class Authentifier {
 	 *
 	 * @return boolean - the customer
 	 */
-	public function getMember() {
-		return $this->_oMember;
+	public function getUser() {
+		return $this->_oUser;
 	}
 
 	/**
@@ -71,16 +71,16 @@ class Authentifier {
 	}
 
 	/**
-	 * Return true if customer is member, but not admin
+	 * Return true if customer is user, but not admin
 	 */
-	public function isMember() {
-		return ($this->_iStatus == Authentifier::BASIC_MEMBER);
+	public function isUser() {
+		return ($this->_iStatus == Authentifier::IS_MEMBER);
 	}
 
 	/**
 	 * Return true if customer is admin
 	 */
 	public function isAdmin() {
-		return ($this->_iStatus == Authentifier::ADMIN_MEMBER);
+		return ($this->_iStatus == Authentifier::IS_ADMIN);
 	}
 }

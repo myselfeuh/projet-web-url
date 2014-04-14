@@ -1,11 +1,11 @@
-# sous menu membre (admin inclus)
-- listing des urls du membre (suppression, stat par url, si possible)
+# sous menu user (admin inclus)
+- listing des urls du user (suppression, stat par url, si possible)
 - modification du compte
 - statistiques de ses urls
 
 # sous menu admin
-- idem que membre
-- gestion des membres
+- idem que user
+- gestion des users
 - gestion globale des urls
 - statistiques globales
 

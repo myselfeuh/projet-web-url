@@ -45,9 +45,9 @@ class Url
     private $creation;
 
     /**
-     * @var \Membre
+     * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="Membre")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="auteur", referencedColumnName="id")
      * })
@@ -143,10 +143,10 @@ class Url
     /**
      * Set auteur
      *
-     * @param \UrlReducer\CoreBundle\Entity\Membre $auteur
+     * @param \UrlReducer\CoreBundle\Entity\User $auteur
      * @return Url
      */
-    public function setAuteur(\UrlReducer\CoreBundle\Entity\Membre $auteur = null)
+    public function setAuteur(\UrlReducer\CoreBundle\Entity\User $auteur = null)
     {
         $this->auteur = $auteur;
 
@@ -156,7 +156,7 @@ class Url
     /**
      * Get auteur
      *
-     * @return \UrlReducer\CoreBundle\Entity\Membre
+     * @return \UrlReducer\CoreBundle\Entity\User
      */
     public function getAuteur()
     {

@@ -5,7 +5,7 @@ namespace UrlReducer\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
-use UrlReducer\CoreBundle\Entity\Membre;
+use UrlReducer\CoreBundle\Entity\User;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,7 +19,7 @@ class UrlController extends Controller {
         $aRenderingData = array();
 
         $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
-        $oMember = $oAuthentifier->getMember();
+        $oUser = $oAuthentifier->getUser();
 
         $oUrl = new Url;
 
@@ -39,8 +39,8 @@ class UrlController extends Controller {
                 $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
                 $aSearchCriteria = array('source' => $sSourceUrl);
 
-                if ($oMember != null) {
-                    $aSearchCriteria['auteur'] = $oMember->getId();
+                if ($oUser != null) {
+                    $aSearchCriteria['auteur'] = $oUser->getId();
                 }
 
                 $oExistingUrl = $oUrlRepository->findOneBy($aSearchCriteria);
@@ -49,10 +49,10 @@ class UrlController extends Controller {
                 // if no url with that source, let create one
                     throw new UrlControllerException;
                 } else if (
-                    $oMember != null 
-                    && $oExistingUrl->getAuteur()->getId() != $oMember->getId()
+                    $oUser != null 
+                    && $oExistingUrl->getAuteur()->getId() != $oUser->getId()
                 ) {
-                // a member must have his own reduced urls, so let create one
+                // a user must have his own reduced urls, so let create one
                     throw new UrlControllerException;
                 } else {
                 // just display the existing reduced one
@@ -60,11 +60,11 @@ class UrlController extends Controller {
                 }
             } catch (UrlControllerException $e) {
                 $oManager = $oDoctrine->getManager();
-                $sEncryptedUrl = $this->reduceUrl($sSourceUrl, $oMember);
+                $sEncryptedUrl = $this->reduceUrl($sSourceUrl, $oUser);
 
                 // we only need to set the short url, the real one was bind through oFormUrl
                 $oUrl->setCourte($sEncryptedUrl);
-                $oUrl->setAuteur($oMember);
+                $oUrl->setAuteur($oUser);
 
                 $aRenderingData['reduced_url'] = $this->getReducedUrl($sEncryptedUrl);
 
@@ -114,9 +114,9 @@ class UrlController extends Controller {
      *
      * @param String - the real url
      */
-    private function reduceUrl($sUrl, $oMember = null) {
-        if ($oMember != null) {
-            $sHashedUrl = sha1($oMember->getId() . $sUrl);
+    private function reduceUrl($sUrl, $oUser = null) {
+        if ($oUser != null) {
+            $sHashedUrl = sha1($oUser->getId() . $sUrl);
         } else {
             $sHashedUrl = sha1($sUrl);
         }

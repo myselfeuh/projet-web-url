@@ -5,12 +5,12 @@ namespace UrlReducer\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Membre
+ * User
  *
- * @ORM\Table(name="membres", uniqueConstraints={@ORM\UniqueConstraint(name="pseudo", columns={"pseudo"})})
- * @ORM\Entity(repositoryClass="UrlReducer\CoreBundle\Entity\MembreRepository")
+ * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="pseudo", columns={"pseudo"})})
+ * @ORM\Entity(repositoryClass="UrlReducer\CoreBundle\Entity\UserRepository")
  */
-class Membre {
+class User {
     /**
      * @var integer
      *
@@ -85,7 +85,7 @@ class Membre {
      * Set nom
      *
      * @param string $nom
-     * @return Membre
+     * @return User
      */
     public function setNom($nom)
     {
@@ -108,7 +108,7 @@ class Membre {
      * Set prenom
      *
      * @param string $prenom
-     * @return Membre
+     * @return User
      */
     public function setPrenom($prenom)
     {
@@ -131,7 +131,7 @@ class Membre {
      * Set pseudo
      *
      * @param string $pseudo
-     * @return Membre
+     * @return User
      */
     public function setPseudo($pseudo)
     {
@@ -154,7 +154,7 @@ class Membre {
      * Set mail
      *
      * @param string $mail
-     * @return Membre
+     * @return User
      */
     public function setMail($mail)
     {
@@ -177,7 +177,7 @@ class Membre {
      * Set mdp
      *
      * @param string $mdp
-     * @return Membre
+     * @return User
      */
     public function setMdp($mdp)
     {
@@ -200,7 +200,7 @@ class Membre {
      * Set activation
      *
      * @param string $activation
-     * @return Membre
+     * @return User
      */
     public function setActivation($activation)
     {
@@ -223,7 +223,7 @@ class Membre {
      * Set profil
      *
      * @param string $profil
-     * @return Membre
+     * @return User
      */
     public function setProfil($profil)
     {
