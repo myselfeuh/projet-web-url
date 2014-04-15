@@ -3,14 +3,6 @@
 
 {% block title %}Bienvenue sur cet incroyable site de réduction d'url{% endblock %}
 
-{% block menu %}
-	{{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
-{% endblock %}
-
-{% block sidebar %}
-	{{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
-{% endblock %}
-
 {% block body %}
     {% if reduced_url is defined %} 
     	<a href="{{ reduced_url }}">{{ reduced_url }}</a>

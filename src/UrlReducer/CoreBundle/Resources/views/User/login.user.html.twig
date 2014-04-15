@@ -1,17 +1,8 @@
 {# src/UrlReducer/CoreBundle/Resources/views/User/login.user.html.twig #}
+{% extends 'UrlReducerCoreBundle::layout.html.twig' %}
 
-<h1>login</h1>
+{% block title %}Page de login{% endblock %}
 
-<div id="menu">
-    {{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
-</div>
-<div>
-{% for label, flashes in app.session.flashbag.all %}
-    {% for flash in flashes %}
-        <div class="alert alert-{{ label }}">
-            {{ flash }}
-        </div>
-    {% endfor %}
-{% endfor %}
-</div>
-<div>{{ form(form_login_user) }}</div>
+{% block body %}
+    {{ form(form_login_user) }}
+{% endblock %}

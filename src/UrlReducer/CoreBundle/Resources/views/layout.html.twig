@@ -10,11 +10,21 @@
     </head>
     <body>
         <div id="menu">
-            {% block menu %}{% endblock %}
+            {{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
         </div>
 
         <div id="sidebar">
-            {% block sidebar %}{% endblock %}
+            {{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
+        </div>
+
+        <div id="flash">
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <div class="alert alert-{{ label }}">
+                    {{ flash }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         </div>
 
         <div id="content">

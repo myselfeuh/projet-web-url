@@ -1,20 +1,8 @@
 {# src/UrlReducer/CoreBundle/Resources/views/User/register.user.html.twig #}
+{% extends 'UrlReducerCoreBundle::layout.html.twig' %}
 
-<h1>inscription</h1>
+{% block title %}Page d'inscription{% endblock %}
 
-<div>
-
-<div id="menu">
-    {{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
-</div>
-
-{% for label, flashes in app.session.flashbag.all %}
-    {% for flash in flashes %}
-        <div class="alert alert-{{ label }}">
-            {{ flash }}
-        </div>
-    {% endfor %}
-{% endfor %}
-</div>
-
-<div>{{ form(form_register_user) }}</div>
+{% block body %}
+    {{ form(form_register_user) }}
+{% endblock %}

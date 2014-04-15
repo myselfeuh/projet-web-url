@@ -38,7 +38,10 @@ class UrlController extends Controller {
 
                 // try to retrieve an existing reduced url
                 $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
-                $aSearchCriteria = array('source' => $sSourceUrl);
+                $aSearchCriteria = array(
+                    'source' => $sSourceUrl,
+                    'auteur' => null
+                );
 
                 if ($oUser != null) {
                     $aSearchCriteria['auteur'] = $oUser->getId();
@@ -153,7 +156,39 @@ class UrlController extends Controller {
      *
      */
     public function deleteAction($iId) {
+        // get the current member
+        $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+        $oFlashBag = $this->get('session')->getFlashBag();
 
+        try {
+            if ($oAuthentifier->getStatus() == Authentifier::IS_VISITOR) {
+                throw new UrlControllerException("Vous n'avez pas les droits suffisants");
+            }
+
+            $oDoctrine = $this->getDoctrine();
+            $oManager = $oDoctrine->getManager();
+
+            $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
+            $oUrlToDelete = $oUrlRepository->findOneById($iId);
+
+            if ($oUrlToDelete == null) {
+                throw new UrlControllerException("cette url n'existe pas");
+            }
+
+            $oManager->remove($oUrlToDelete);
+            $oManager->flush();
+
+            $oFlashBag->add('confirmation message', "l'url a bien été supprimée");
+            $sUrlToListUrls = $this->generateUrl('url_reducer_core_url_list');
+            $oResponse = $this->redirect($sUrlToListUrls);
+        } catch (UrlControllerException $e) {
+            $oFlashBag->add('delete url error', $e->getMessage());
+
+            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
+            $oResponse = $this->redirect($sUrlToIndex); 
+        }
+
+        return $oResponse;
     }
 
     /**

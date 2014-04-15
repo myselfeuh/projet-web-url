@@ -126,10 +126,10 @@ class UserController extends Controller {
      *
      */
     public function modifyAction(Request $oRequest) {
-    	$oAuthentifier = $this->get('url_reducer_core.authentifier');
+    	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
 
     	try {
-    		if ($oAuthentifier->getStatus() == Authentifer::IS_VISITOR) {
+    		if ($oAuthentifier->getStatus() == Authentifier::IS_VISITOR) {
     			throw new UserControllerException;
     		}
 
@@ -139,18 +139,22 @@ class UserController extends Controller {
 		    $oFormRegister = $this->createForm(new UserType, $oUser);
 		    $oFormRegister->handleRequest($oRequest);
 
-		    if (!$oFormRegister->isValid()) {
-		    	throw new UserControllerException('Form has not yet been submitted');
+		    if ($oFormRegister->isValid()) {
+                // retrieve form data as a User object
+                $oUser = $oFormRegister->getData();
+
+                // persist 
+                $this->processUserForm($oUser);
+
+                // set the user in session, and redirect to index page
+                $sRedirectUrl = $this->generateUrl('url_reducer_core_user_modify');
+                $oResponse = $this->redirect($sRedirectUrl);
 		    } else {
-		    	// retrieve form data as a User object
-		    	$oUser = $oFormRegister->getData();
-
-		    	// persist 
-		    	$this->processUserForm($oUser);
-
-	            // set the user in session, and redirect to index page
-	            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
-	            $oResponse = $this->redirect($sUrlToIndex);
+		    	// construct form view
+                $oResponse = $this->render(
+                    'UrlReducerCoreBundle:User:register.user.html.twig',
+                    array('form_register_user' => $oFormRegister->createView())
+                );
 		    }
     	} catch (UserControllerException $e) {
     		// get some services
@@ -160,6 +164,8 @@ class UserController extends Controller {
     		$sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
     		$oResponse = $this->redirect($sUrlToIndex);
     	}
+
+        return $oResponse;
     }
 
     /**

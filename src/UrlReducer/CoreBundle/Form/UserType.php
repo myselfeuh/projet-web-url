@@ -19,7 +19,7 @@ class UserType extends AbstractType
                 ->add('pseudo', 'text')
                 ->add('mail', 'text')
                 ->add('mdp', 'password')
-                ->add("s'inscrire", 'submit')
+                ->add('valider', 'submit')
         ;
     }
     
