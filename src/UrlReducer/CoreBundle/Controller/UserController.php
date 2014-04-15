@@ -41,11 +41,6 @@ class UserController extends Controller {
 
         	$sCryptedPassword = crypt($sPassword, 'user');
 
-        	var_dump(array(
-        		$oUser->getMdp(),
-        		$sCryptedPassword
-        	));
-
         	if ($oUser == null) {
         		$oFlashBag->add('user_flash', 'No user found');
         	} else if ($oUser->getMdp() != $sCryptedPassword) {
@@ -93,32 +88,19 @@ class UserController extends Controller {
 		    } else {
 		    	// retrieve form data as a User object
 		    	$oUser = $oFormRegister->getData();
+		    	$oUserRepository = $this->getDoctrine()->getRepository('UrlReducerCoreBundle:User');
 
-		    	// crypt user's password
-		    	$sPassword 	 = $oUser->getMdp();
-	        	$sCryptedPassword = crypt($sPassword, 'user');
+		    	// check: if the user who's registering is the first of the application, he must be an administrator
+		    	if ($oUserRepository->count() == 0) {
+		    		// set some values (NOTE: force activation for the moment)
+		    		$oUser->setProfil('admin');
+		    	} else {
+		    		// set some values (NOTE: force activation for the moment)
+		    		$oUser->setProfil('user');
+		    	}
 
-	        	// get some services
-	        	$oDoctrine = $this->getDoctrine();
-	            $oManager = $oDoctrine->getManager();
-
-	            $oUserRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:User');
-
-	            // check: if the user who's registering is the first of the application, he must be an administrator
-	            if ($oUserRepository->count() == 0) {
-	            	// set some values (NOTE: force activation for the moment)
-	            	$oUser->setProfil('admin');
-	            } else {
-	            	// set some values (NOTE: force activation for the moment)
-	            	$oUser->setProfil('user');
-	            }
-
-	            // set some values (NOTE: force activation for the moment)
-	            $oUser->setMdp($sCryptedPassword);
-	            $oUser->setActivation('ok');
-
-	            $oManager->persist($oUser);
-	            $oManager->flush(); 
+		    	// persist 
+		    	$this->processUserForm($oUser);
 
 	            // set the user in session, and redirect to index page
 	            $this->get('session')->set('user_id', $oUser->getId());
@@ -144,7 +126,60 @@ class UserController extends Controller {
      *
      */
     public function modifyAction(Request $oRequest) {
+    	$oAuthentifier = $this->get('url_reducer_core.authentifier');
 
+    	try {
+    		if ($oAuthentifier->getStatus() == Authentifer::IS_VISITOR) {
+    			throw new UserControllerException;
+    		}
+
+    		$oUser = $oAuthentifier->getUser();
+
+    		// handle form
+		    $oFormRegister = $this->createForm(new UserType, $oUser);
+		    $oFormRegister->handleRequest($oRequest);
+
+		    if (!$oFormRegister->isValid()) {
+		    	throw new UserControllerException('Form has not yet been submitted');
+		    } else {
+		    	// retrieve form data as a User object
+		    	$oUser = $oFormRegister->getData();
+
+		    	// persist 
+		    	$this->processUserForm($oUser);
+
+	            // set the user in session, and redirect to index page
+	            $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
+	            $oResponse = $this->redirect($sUrlToIndex);
+		    }
+    	} catch (UserControllerException $e) {
+    		// get some services
+		    $oFlashBag = $this->get('session')->getFlashBag();
+		    $oFlashBag->add('user message', "Vous n'avez pas les droits d'accès");
+
+    		$sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
+    		$oResponse = $this->redirect($sUrlToIndex);
+    	}
+    }
+
+    /**
+     *
+     */
+    public function processUserForm($oFormObject) {
+    	// crypt user's password
+    	$sPassword 	 = $oFormObject->getMdp();
+    	$sCryptedPassword = crypt($sPassword, 'user');
+
+    	// get some services
+    	$oDoctrine = $this->getDoctrine();
+        $oManager = $oDoctrine->getManager();
+
+        // set some values (NOTE: force activation for the moment)
+        $oFormObject->setMdp($sCryptedPassword);
+        $oFormObject->setActivation('ok');
+
+        $oManager->persist($oFormObject);
+        $oManager->flush(); 
     }
 
     /**
