@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use UrlReducer\CoreBundle\Entity\Url;
 use UrlReducer\CoreBundle\Entity\User;
 use UrlReducer\CoreBundle\Service\Authentifier;
+use UrlReducer\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller {
@@ -38,7 +39,12 @@ class UserController extends Controller {
 	   		$oUserRepository = $this->getDoctrine()->getRepository('UrlReducerCoreBundle:User');
         	$oUser 		   = $oUserRepository->findOneByPseudo($sPseudo);
 
-        	$sCryptedPassword = crypt($sPassword, 'user_salt');
+        	$sCryptedPassword = crypt($sPassword, 'user');
+
+        	var_dump(array(
+        		$oUser->getMdp(),
+        		$sCryptedPassword
+        	));
 
         	if ($oUser == null) {
         		$oFlashBag->add('user_flash', 'No user found');
@@ -78,23 +84,8 @@ class UserController extends Controller {
 	    	// get some services
 		    $oFlashBag = $this->get('session')->getFlashBag();
 
-			$oFormBuilder = $this->createFormBuilder($oUser)
-			                     ->add('nom', 'text')
-			                     ->add('prenom', 'text')
-			                     ->add('pseudo', 'text')
-			                     ->add('mail', 'text')
-			                     ->add('mdp', 'password')
-			                     ->add('profil', 'choice', 
-			                     	array('choices' => 
-			                     		array(
-			                     			'user' => 'Membre', 
-			                     			'admin'  => 'Administrateur'
-			                     		)
-									))
-			                     ->add("s'inscrire", 'submit');
-
-			// handle form
-			$oFormRegister = $oFormBuilder->getForm();
+		    // handle form
+		    $oFormRegister = $this->createForm(new UserType, $oUser);
 		    $oFormRegister->handleRequest($oRequest);
 
 		    if (!$oFormRegister->isValid()) {
@@ -105,7 +96,7 @@ class UserController extends Controller {
 
 		    	// crypt user's password
 		    	$sPassword 	 = $oUser->getMdp();
-	        	$sCryptedPassword = crypt($sPassword, $oUser->getId());
+	        	$sCryptedPassword = crypt($sPassword, 'user');
 
 	        	// get some services
 	        	$oDoctrine = $this->getDoctrine();
@@ -114,12 +105,12 @@ class UserController extends Controller {
 	            $oUserRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:User');
 
 	            // check: if the user who's registering is the first of the application, he must be an administrator
-	            if ($oUserRepository->count() == 0 && $oUser->getProfil() != 'admin') {
-	            	$sError = 'Le premier membre inscrit du site doit absolument être un administrateur';
-
-	            	$oFlashBag->add('user_flash', $sError);
-	            	// switch save process
-	            	throw new UserControllerException($sError);
+	            if ($oUserRepository->count() == 0) {
+	            	// set some values (NOTE: force activation for the moment)
+	            	$oUser->setProfil('admin');
+	            } else {
+	            	// set some values (NOTE: force activation for the moment)
+	            	$oUser->setProfil('user');
 	            }
 
 	            // set some values (NOTE: force activation for the moment)

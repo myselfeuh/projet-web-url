@@ -3,7 +3,6 @@
 namespace UrlReducer\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use UrlReducer\CoreBundle\Service\Authentifier;
 
 /**
@@ -22,6 +21,7 @@ class MenuController extends Controller {
 			case Authentifier::IS_VISITOR:
 				$sMessage = 'Bienvenue';
 				
+				$aMenuEntries['url_reducer_core_url_generate'] 	= 'accueil';
 				$aMenuEntries['url_reducer_core_user_login'] 	= 'login';
 				$aMenuEntries['url_reducer_core_user_register'] = 'inscription';
 				break;

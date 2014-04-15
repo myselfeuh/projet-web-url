@@ -29,9 +29,9 @@ class Stat
     private $date = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var \Urls
+     * @var \Url
      *
-     * @ORM\ManyToOne(targetEntity="Urls")
+     * @ORM\ManyToOne(targetEntity="Url")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="url", referencedColumnName="id")
      * })
@@ -76,10 +76,10 @@ class Stat
     /**
      * Set url
      *
-     * @param \UrlReducer\CoreBundle\Entity\Urls $url
+     * @param \UrlReducer\CoreBundle\Entity\Url $url
      * @return Stat
      */
-    public function setUrl(\UrlReducer\CoreBundle\Entity\Urls $url = null)
+    public function setUrl(\UrlReducer\CoreBundle\Entity\Url $url = null)
     {
         $this->url = $url;
 
@@ -89,7 +89,7 @@ class Stat
     /**
      * Get url
      *
-     * @return \UrlReducer\CoreBundle\Entity\Urls 
+     * @return \UrlReducer\CoreBundle\Entity\Url 
      */
     public function getUrl()
     {
