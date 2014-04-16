@@ -3,11 +3,13 @@
 namespace UrlReducer\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use UrlReducer\CoreBundle\Entity\Url;
-use UrlReducer\CoreBundle\Entity\User;
-use UrlReducer\CoreBundle\Service\Authentifier;
-use UrlReducer\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
+
+use UrlReducer\CoreBundle\Entity\Url;
+use UrlReducer\CoreBundle\Form\UserType;
+
+use UrlReducer\UserBundle\Entity\User;
+use UrlReducer\UserBundle\Service\Authentifier;
 
 class UserControllerException extends \Exception {};
 
@@ -40,7 +42,7 @@ class UserController extends AbstractUserController {
 	    	$sPseudo 	 = $oFormLoginData['pseudo'];
 	    	$sPassword 	 = $oFormLoginData['password'];
 
-	   		$oUserRepository = $this->getDoctrine()->getRepository('UrlReducerCoreBundle:User');
+	   		$oUserRepository = $this->getDoctrine()->getRepository('UrlReducerUserBundle:User');
         	$oUser 		   = $oUserRepository->findOneByPseudo($sPseudo);
 
         	$sCryptedPassword = crypt($sPassword, 'user');
@@ -64,7 +66,7 @@ class UserController extends AbstractUserController {
 			);
 
 			$oResponse = $this->render(
-	            'UrlReducerCoreBundle:User:login.user.html.twig',
+	            'UrlReducerUserBundle:User:login.user.html.twig',
 	            $aRenderingData
         	);
 	    }
@@ -92,7 +94,7 @@ class UserController extends AbstractUserController {
 		    } else {
 		    	// retrieve form data as a User object
 		    	$oUser = $oFormRegister->getData();
-		    	$oUserRepository = $this->getDoctrine()->getRepository('UrlReducerCoreBundle:User');
+		    	$oUserRepository = $this->getDoctrine()->getRepository('UrlReducerUserBundle:User');
 
 		    	// check: if the user who's registering is the first of the application, he must be an administrator
 		    	if ($oUserRepository->count() == 0) {
@@ -118,7 +120,7 @@ class UserController extends AbstractUserController {
 			);
 
 	    	$oResponse = $this->render(
-	            'UrlReducerCoreBundle:User:register.user.html.twig',
+	            'UrlReducerUserBundle:User:register.user.html.twig',
 	            $aRenderingData
 	        );
 	    }

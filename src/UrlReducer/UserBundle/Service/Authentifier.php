@@ -30,7 +30,7 @@ class Authentifier {
 		$iUserId = $oSession->get('user_id');
 
 		if (!empty($iUserId)) {
-			$oUserRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:User');
+			$oUserRepository = $oDoctrine->getRepository('UrlReducerUserBundle:User');
             $this->_oUser = $oUserRepository->find($iUserId);
 		}
 

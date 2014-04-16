@@ -5,7 +5,7 @@ namespace UrlReducer\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
-use UrlReducer\CoreBundle\Entity\User;
+use UrlReducer\UserBundle\Entity\User;
 use UrlReducer\UserBundle\Service\Authentifier;
 use Symfony\Component\HttpFoundation\Request;
 

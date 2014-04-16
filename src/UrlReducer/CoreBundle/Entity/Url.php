@@ -5,6 +5,8 @@ namespace UrlReducer\CoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use UrlReducer\UserBundle\Entity\User;
+
 /**
  * Url
  *
@@ -45,9 +47,9 @@ class Url
     private $creation;
 
     /**
-     * @var \User
+     * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="UrlReducer\UserBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="auteur", referencedColumnName="id")
      * })
@@ -143,10 +145,10 @@ class Url
     /**
      * Set auteur
      *
-     * @param \UrlReducer\CoreBundle\Entity\User $auteur
+     * @param UrlReducer\UserBundle\Entity\User $auteur
      * @return Url
      */
-    public function setAuteur(\UrlReducer\CoreBundle\Entity\User $auteur = null)
+    public function setAuteur(User $auteur = null)
     {
         $this->auteur = $auteur;
 
@@ -156,7 +158,7 @@ class Url
     /**
      * Get auteur
      *
-     * @return \UrlReducer\CoreBundle\Entity\User
+     * @return UrlReducer\UserBundle\Entity\User
      */
     public function getAuteur()
     {

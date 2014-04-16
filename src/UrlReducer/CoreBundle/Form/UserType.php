@@ -29,7 +29,7 @@ class UserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UrlReducer\CoreBundle\Entity\User'
+            'data_class' => 'UrlReducer\UserBundle\Entity\User'
         ));
     }
 
@@ -38,6 +38,6 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return 'urlreducer_corebundle_user';
+        return 'urlreducer_userbundle_user';
     }
 }

@@ -4,7 +4,7 @@ namespace UrlReducer\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use UrlReducer\CoreBundle\Entity\Url;
-use UrlReducer\CoreBundle\Entity\User;
+use UrlReducer\UserBundle\Entity\User;
 use UrlReducer\UserBundle\Service\Authentifier;
 use UrlReducer\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,17 +45,12 @@ class MemberController extends AbstractUserController {
 		    } else {
 		    	// construct form view
                 $oResponse = $this->render(
-                    'UrlReducerCoreBundle:User:register.user.html.twig',
+                    'UrlReducerUserBundle:User:register.user.html.twig',
                     array('form_register_user' => $oFormRegister->createView())
                 );
 		    }
     	} catch (UserControllerException $e) {
-    		// get some services
-		    $oFlashBag = $this->get('session')->getFlashBag();
-		    $oFlashBag->add('user message', "Vous n'avez pas les droits d'accès");
-
-    		$sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
-    		$oResponse = $this->redirect($sUrlToIndex);
+    		$oResponse = $this->renderAccessLevelException();
     	}
 
         return $oResponse;
