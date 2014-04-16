@@ -1,3 +1,7 @@
+url_reducer_user:
+    resource: "@UrlReducerUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 url_reducer_core:
     resource: "@UrlReducerCoreBundle/Resources/config/routing.yml"
     prefix:   /

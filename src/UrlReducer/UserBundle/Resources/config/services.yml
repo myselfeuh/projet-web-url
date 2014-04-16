@@ -1,0 +1,7 @@
+parameters:
+#    url_reducer_user.example.class: UrlReducer\UserBundle\Example
+
+services:
+#    url_reducer_user.example:
+#        class: %url_reducer_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
