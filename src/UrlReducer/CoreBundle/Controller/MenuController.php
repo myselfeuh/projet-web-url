@@ -3,7 +3,7 @@
 namespace UrlReducer\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use UrlReducer\CoreBundle\Service\Authentifier;
+use UrlReducer\UserBundle\Service\Authentifier;
 
 /**
  *
@@ -13,7 +13,7 @@ class MenuController extends Controller {
      *
      */
     public function userAction($sRoute) {
-		$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+		$oAuthentifier = $this->container->get('url_reducer_user.authentifier');
 
 		$aMenuEntries = array();
 
@@ -22,15 +22,15 @@ class MenuController extends Controller {
 				$sMessage = 'Bienvenue';
 				
 				$aMenuEntries['url_reducer_core_url_generate'] 	= 'accueil';
-				$aMenuEntries['url_reducer_core_user_login'] 	= 'login';
-				$aMenuEntries['url_reducer_core_user_register'] = 'inscription';
+				$aMenuEntries['url_reducer_user_login'] 	= 'login';
+				$aMenuEntries['url_reducer_user_register'] = 'inscription';
 				break;
 			case Authentifier::IS_ADMIN:
 			case Authentifier::IS_MEMBER:
 				$sMessage = 'Bonjour, ' . $oAuthentifier->getUser()->getPseudo();
 				
-				$aMenuEntries['url_reducer_core_user_menu']   = 'mon compte';
-				$aMenuEntries['url_reducer_core_user_logout'] = 'logout';
+				// $aMenuEntries['url_reducer_core_user_menu']   = 'mon compte';
+				$aMenuEntries['url_reducer_user_logout'] = 'logout';
 				break;
 		}
 
@@ -53,18 +53,18 @@ class MenuController extends Controller {
      *
      */
     public function memberAction() {
-    	$oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+    	$oAuthentifier = $this->container->get('url_reducer_user.authentifier');
 
 		$aMenuEntries = array();
 
 		if ($oAuthentifier->getStatus() >= Authentifier::IS_MEMBER) {
 			$aMenuEntries['url_reducer_core_url_list'] 		= 'gérer mes urls';
 			$aMenuEntries['url_reducer_core_stats'] 		= 'voir mes statistiques';
-			$aMenuEntries['url_reducer_core_user_modify'] 	= 'modifier mes informations';
+			$aMenuEntries['url_reducer_user_modify'] 		= 'modifier mes informations';
 		}
 
 		if ($oAuthentifier->getStatus() == Authentifier::IS_ADMIN) {
-			$aMenuEntries['url_reducer_core_user_delete'] 	= 'gérer les utilisateurs';
+			$aMenuEntries['url_reducer_user_manage'] 		= 'gérer les utilisateurs';
 		}
 
 		$oResponse = $this->render(

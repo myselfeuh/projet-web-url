@@ -6,6 +6,6 @@ services:
 #        class: %url_reducer_core.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
-    url_reducer_core.authentifier:
-        class: UrlReducer\CoreBundle\Service\Authentifier
+    url_reducer_user.authentifier:
+        class: UrlReducer\UserBundle\Service\Authentifier
         arguments: [@session, @doctrine]

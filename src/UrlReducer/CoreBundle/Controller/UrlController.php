@@ -6,9 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
 use UrlReducer\CoreBundle\Entity\User;
-use UrlReducer\CoreBundle\Service\Authentifier;
+use UrlReducer\UserBundle\Service\Authentifier;
 use Symfony\Component\HttpFoundation\Request;
-
 
 class UrlControllerException extends \Exception {};
 
@@ -19,7 +18,7 @@ class UrlController extends Controller {
     public function generateReducedUrlAction(Request $oRequest) {
         $aRenderingData = array();
 
-        $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+        $oAuthentifier = $this->container->get('url_reducer_user.authentifier');
         $oUser = $oAuthentifier->getUser();
 
         $oUrl = new Url;
@@ -118,7 +117,7 @@ class UrlController extends Controller {
      */
     public function listAction() {
         // get the current member
-        $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+        $oAuthentifier = $this->container->get('url_reducer_user.authentifier');
 
         try {
             if ($oAuthentifier->getStatus() == Authentifier::IS_VISITOR) {
@@ -157,7 +156,7 @@ class UrlController extends Controller {
      */
     public function deleteAction($iId) {
         // get the current member
-        $oAuthentifier = $this->container->get('url_reducer_core.authentifier');
+        $oAuthentifier = $this->container->get('url_reducer_user.authentifier');
         $oFlashBag = $this->get('session')->getFlashBag();
 
         try {
