@@ -74,13 +74,10 @@ CREATE TABLE IF NOT EXISTS `utilisations` (
 -- Contraintes pour la table `urls`
 --
 ALTER TABLE `urls`
-  ADD CONSTRAINT `urls_ibfk_1` FOREIGN KEY (`auteur`) REFERENCES `membres` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
-  ADD CONSTRAINT `urls_ibfk_2` FOREIGN KEY (`auteur`) REFERENCES `membres` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION;
+  ADD CONSTRAINT `urls_ibfk_1` FOREIGN KEY (`auteur`) REFERENCES `membres` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `utilisations`
 --
 ALTER TABLE `utilisations`
-  ADD CONSTRAINT `utilisations_ibfk_1` FOREIGN KEY (`url`) REFERENCES `urls` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `utilisations_ibfk_2` FOREIGN KEY (`url`) REFERENCES `urls` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
+  ADD CONSTRAINT `utilisations_ibfk_1` FOREIGN KEY (`url`) REFERENCES `urls` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
