@@ -1,0 +1,19 @@
+url_reducer_user_login:
+    pattern:  /user/login
+    defaults: { _controller: UrlReducerUserBundle:User:login }
+
+url_reducer_user_register:
+    pattern:  /user/register
+    defaults: { _controller: UrlReducerUserBundle:User:register }
+
+url_reducer_user_modify:
+    pattern:  /member/modify
+    defaults: { _controller: UrlReducerUserBundle:Member:modify }
+
+url_reducer_user_logout:
+    pattern:  /member/logout
+    defaults: { _controller: UrlReducerUserBundle:Member:logout }
+
+url_reducer_user_manage:
+    pattern:  /admin/manage
+    defaults: { _controller: UrlReducerUserBundle:Admin:manage }

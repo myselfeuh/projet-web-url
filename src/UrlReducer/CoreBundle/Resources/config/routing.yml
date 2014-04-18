@@ -1,0 +1,32 @@
+url_reducer_core_phpinfo:
+    pattern:  /phpinfo
+    defaults: { _controller: UrlReducerCoreBundle:Default:phpinfo }
+
+url_reducer_core_url_generate:
+    pattern:  /
+    defaults: { _controller: UrlReducerCoreBundle:Url:generateReducedUrl }
+
+url_reducer_core_url_list:
+    pattern:  /url/list
+    defaults: { _controller: UrlReducerCoreBundle:Url:list }
+
+url_reducer_core_url_delete:
+    pattern:  /url/delete/{iId}
+    defaults: { _controller: UrlReducerCoreBundle:Url:delete }
+
+url_reducer_core_menu_user:
+    pattern:  /menu/user
+    defaults: { _controller: UrlReducerCoreBundle:Menu:user }
+
+url_reducer_core_menu_member:
+    pattern:  /menu/member
+    defaults: { _controller: UrlReducerCoreBundle:Menu:member }
+
+url_reducer_core_stats:
+    pattern:  /stats
+    defaults: { _controller: UrlReducerCoreBundle:Stat:display }
+
+# Must be the last route declared to not match each static urls
+url_reducer_core_url_go:
+    pattern:  /{sUrl}
+    defaults: { _controller: UrlReducerCoreBundle:Url:goToSourceUrl }

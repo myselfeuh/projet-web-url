@@ -1,0 +1,16 @@
+{# src/UrlReducer/CoreBundle/Resources/views/Url/home.html.twig #}
+{% extends 'UrlReducerCoreBundle::layout.html.twig' %}
+
+{% block title %}Bienvenue sur cet incroyable site de réduction d'url{% endblock %}
+
+{% block body %}
+    {% if reduced_url is defined %} 
+    	<a href="{{ reduced_url }}">{{ reduced_url }}</a>
+    {% endif %}
+    
+    {{ form(form_generate_url) }}
+
+    {% if short_url is defined %} 
+    	{{ short_url }}
+    {% endif %}
+{% endblock %}

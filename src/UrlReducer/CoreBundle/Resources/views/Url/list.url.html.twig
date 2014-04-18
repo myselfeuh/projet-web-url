@@ -1,0 +1,45 @@
+{# src/UrlReducer/CoreBundle/Resources/views/Url/list.url.html.twig #}
+{% extends 'UrlReducerCoreBundle::layout.html.twig' %}
+
+{% block title %}mes urls{% endblock %}
+
+{% block menu %}
+	{{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
+{% endblock %}
+
+{% block sidebar %}
+	{{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
+{% endblock %}
+
+{% block body %}
+
+<table>
+   	<caption>mes urls</caption>
+   	<thead> <!-- En-tête du tableau -->
+        <tr>
+            <th>Url hashée</th>
+            <th>Url réelle</th>
+           	<th>Date de création</th>
+           	<th>Propriétaire</th>
+           	<th>Supprimer</th>
+        </tr>
+   	</thead>
+
+   	<tbody>
+   		{% for url in urls %}
+   		<tr>
+   			<td>{{ url.courte }}</td>
+   			<td><a href="{{ url.source }}">{{ url.source }}</a></td>
+   			<td>{{ url.creation | date('Y-m-d H:i:s') }}</td>
+   			{% if url.auteur is null %} 
+   				<td>anonyme</td>
+   			{% else %}
+   				<td>{{ url.auteur.pseudo }}</td>
+   			{% endif %}
+   			<td><a href="{{ path('url_reducer_core_url_delete', { 'iId': url.id }) }}">X</a></td>
+   		</tr>
+   		{% endfor %}
+   	</tbody>
+</table>
+
+{% endblock %}

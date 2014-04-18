@@ -1,0 +1,11 @@
+parameters:
+#    url_reducer_core.example.class: UrlReducer\CoreBundle\Example
+
+services:
+#    url_reducer_core.example:
+#        class: %url_reducer_core.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    url_reducer_user.authentifier:
+        class: UrlReducer\UserBundle\Service\Authentifier
+        arguments: [@session, @doctrine]

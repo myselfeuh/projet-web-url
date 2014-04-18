@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Users" table="users">
+    <unique-constraints>
+      <unique-constraint name="pseudo" columns="pseudo"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nom" type="string" column="nom" length="64" nullable="false"/>
+    <field name="prenom" type="string" column="prenom" length="64" nullable="false"/>
+    <field name="pseudo" type="string" column="pseudo" length="64" nullable="false"/>
+    <field name="mail" type="string" column="mail" length="64" nullable="false"/>
+    <field name="mdp" type="string" column="mdp" length="40" nullable="false"/>
+    <field name="activation" type="string" column="activation" length="40" nullable="false"/>
+    <field name="profil" type="string" column="profil" length="16" nullable="false"/>
+  </entity>
+</doctrine-mapping>

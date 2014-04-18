@@ -1,0 +1,34 @@
+{# app/Resources/views/layout.html.twig #}
+
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>
+        {% block title %}{% endblock %}
+        </title>
+    </head>
+    <body>
+        <div id="menu">
+            {{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
+        </div>
+
+        <div id="sidebar">
+            {{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
+        </div>
+
+        <div id="flash">
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <div class="alert alert-{{ label }}">
+                    {{ flash }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        </div>
+
+        <div id="content">
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>
