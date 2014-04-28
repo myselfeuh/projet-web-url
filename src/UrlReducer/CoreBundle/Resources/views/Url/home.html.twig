@@ -5,22 +5,16 @@
 
 {% block body %}
     <div class="mod w70 center mt3">
-    	<h1 class="mod h4-like txtcenter mam">Saisissez votre url</h1>  
+        {% if reduced_url is defined %}
+            <h1 class="mod h5-like txtcenter mam">Votre url</h1>  
+            <a class="d-block w60 center" href="{{ reduced_url }}">{{ reduced_url }}</a>
+        {% endif %}
 
     	{{ form_start(form_generate_url, { 'attr': {'class': 'search'}}) }}
         <fieldset>
-            {{ form_widget(form_generate_url.source, {'attr': {'placeholder': 'Search'}}) }}
+            {{ form_widget(form_generate_url.source, {'attr': {'placeholder': 'Short what ?'}}) }}
             <input type="submit" value="Go" />
         </fieldset>
     	{{ form_end(form_generate_url) }}		
 	</div>
-
-	<div class="mod ma3">&nbsp;</div>
-
-	{% if reduced_url is defined %}
-		<div class="mod w70 center mt3">
-	    	<h2 class="mod h4-like txtcenter mam">Résultat</h1>
-	    	<a class="d-block w60 center" href="{{ reduced_url }}">{{ reduced_url }}</a>
-		</div>
-    {% endif %}
 {% endblock %}

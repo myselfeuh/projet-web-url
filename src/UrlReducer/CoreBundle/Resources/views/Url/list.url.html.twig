@@ -30,7 +30,7 @@
    		<tr>
    			<td>{{ url.courte }}</td>
    			<td><a href="{{ url.source }}">{{ url.source }}</a></td>
-   			<td>{{ url.creation | date('Y-m-d H:i:s') }}</td>
+   			<td>{{ url.creation | date('Y-m-d') }}</td>
    			{% if url.auteur is null %} 
    				<td>anonyme</td>
    			{% else %}
@@ -40,6 +40,6 @@
    		</tr>
    		{% endfor %}
    	</tbody>
-</table>
+</table>    
 
 {% endblock %}
