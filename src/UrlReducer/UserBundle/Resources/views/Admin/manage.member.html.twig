@@ -4,5 +4,23 @@
 {% block title %}Managemenet des membres{% endblock %}
 
 {% block body %}
-    {{ form(form_manage_member) }}
+    {{ form_start(form_manage_member) }}
+		<fieldset class="radio">
+			{{ form_label(form_manage_member.user, 'Utilisateurs: ') }}
+			<ul>
+			{% for child in form_manage_member.user %}
+				<li>{{ form_widget(child) }} {{ form_label(child) }}</li>
+			{% endfor %}
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			{{ form_label(form_manage_member.profil) }}
+			{{ form_widget(form_manage_member.profil) }}
+		</fieldset>
+    	<fieldset class="form-actions">
+    		<input type="submit" id="form_supprimer" name="form[supprimer]" value="Supprimer" />
+    		<input type="submit" id="form_valider" name="form[valider]" value="Valider" />
+    	</fieldset>
+    {{ form_end(form_manage_member) }}	
 {% endblock %}

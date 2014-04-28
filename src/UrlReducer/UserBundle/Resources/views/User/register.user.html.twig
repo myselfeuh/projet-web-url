@@ -5,33 +5,34 @@
 
 {% block body %}
     {{ form_start(form_register_user) }}
+        {{ form_errors(form_register_user) }}
     	<fieldset>
-    		{{ form_label(form_register_user.nom) }}
+    		{{ form_label(form_register_user.nom, 'Nom: ') }}
     		{{ form_errors(form_register_user.nom) }}
     		{{ form_widget(form_register_user.nom, {'attr': {'class': 'form-text'}}) }}
     	</fieldset>
     	<fieldset>
-    		{{ form_label(form_register_user.prenom) }}
+    		{{ form_label(form_register_user.prenom, 'Prénom: ') }}
     		{{ form_errors(form_register_user.prenom) }}
     		{{ form_widget(form_register_user.prenom, {'attr': {'class': 'form-text'}}) }}
     	</fieldset>
     	<fieldset>
-    		{{ form_label(form_register_user.pseudo) }}
+    		{{ form_label(form_register_user.pseudo, 'Pseudonyme: ') }}
     		{{ form_errors(form_register_user.pseudo) }}
     		{{ form_widget(form_register_user.pseudo, {'attr': {'class': 'form-text'}}) }}
     	</fieldset>
     	<fieldset>
-    		{{ form_label(form_register_user.mail) }}
+    		{{ form_label(form_register_user.mail, 'Mail: ') }}
     		{{ form_errors(form_register_user.mail) }}
     		{{ form_widget(form_register_user.mail, {'attr': {'class': 'form-text'}}) }}
     	</fieldset>
     	<fieldset>
-    		{{ form_label(form_register_user.mdp) }}
+    		{{ form_label(form_register_user.mdp, 'Mot de passe: ') }}
     		{{ form_errors(form_register_user.mdp) }}
     		{{ form_widget(form_register_user.mdp, {'attr': {'class': 'form-text'}}) }}
     	</fieldset>
     	<fieldset class="form-actions">
-    		<input type="submit" id="urlreducer_userbundle_user_valider" name="urlreducer_userbundle_user[valider]" value="valider"/>
+    		<input type="submit" value="valider"/>
     	</fieldset>
     {{ form_end(form_register_user) }}	
 {% endblock %}

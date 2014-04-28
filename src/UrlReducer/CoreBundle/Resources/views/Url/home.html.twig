@@ -5,19 +5,13 @@
 
 {% block body %}
     <div class="mod w70 center mt3">
-    	<h1 class="mod h4-like txtcenter mam">Saisissez votre url</h1>
+    	<h1 class="mod h4-like txtcenter mam">Saisissez votre url</h1>  
 
-    	{{ form_start(form_generate_url) }}
-            <fieldset>
-        	    {{ form_errors(form_generate_url) }}
-
-        	    {{ form_errors(form_generate_url.source) }}
-        	    {{ form_widget(form_generate_url.source, {'attr': {'class': 'form-text input-generate-url'}}) }}                
-            </fieldset>
-
-            <fieldset class="form-actions">
-               <input type="submit" id="form_générer" name="form[générer]" class="submit-generate-url" value="Générer l'url"/>
-            </fieldset>
+    	{{ form_start(form_generate_url, { 'attr': {'class': 'search'}}) }}
+        <fieldset>
+            {{ form_widget(form_generate_url.source, {'attr': {'placeholder': 'Search'}}) }}
+            <input type="submit" value="Go" />
+        </fieldset>
     	{{ form_end(form_generate_url) }}		
 	</div>
 

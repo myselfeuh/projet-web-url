@@ -61,8 +61,6 @@ class AdminController extends AbstractUserController {
                 } else {
                     throw new AdminControllerException($sMessage);
                 }
-
-                var_dump($aFormData);
 		    } 
     	} catch (AccessLevelException $e) {
     		$oResponse = $this->renderAccessLevelException();
@@ -139,7 +137,7 @@ class AdminController extends AbstractUserController {
         );
 
         $oFormBuilder->add(
-            'selected_user', 
+            'user', 
             'choice', 
             $aMemberChoiceListOptions
         );
@@ -158,9 +156,6 @@ class AdminController extends AbstractUserController {
             'choice', 
             $aMemberProfilChoicesOptions
         );
-
-        $oFormBuilder->add('valider', 'submit');
-        $oFormBuilder->add('supprimer', 'submit');
 
         return $oFormBuilder->getForm();
     }   
