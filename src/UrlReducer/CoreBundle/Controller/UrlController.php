@@ -24,8 +24,7 @@ class UrlController extends Controller {
         $oUrl = new Url;
 
         $oFormBuilder = $this->createFormBuilder($oUrl)
-                             ->add('source', 'text')
-                             ->add('générer', 'submit');
+                             ->add('source', 'text');
 
         $oFormUrl = $oFormBuilder->getForm();
         $oFormUrl->handleRequest($oRequest);

@@ -26,8 +26,7 @@ class UserController extends AbstractUserController {
 
 		$oFormBuilder = $this->createFormBuilder()
 		                     ->add('pseudo', 'text')
-		                     ->add('password', 'password')
-		                     ->add("s'authentifier", 'submit');
+		                     ->add('password', 'password');
 
 		$oFormLogin = $oFormBuilder->getForm();
 

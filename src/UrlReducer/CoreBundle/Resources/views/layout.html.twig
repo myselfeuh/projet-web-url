@@ -11,6 +11,10 @@
         {% stylesheets 'bundles/urlreducercore/css/*' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
+
+        {% stylesheets 'bundles/urlreduceruser/css/*' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
     </head>
     <body>
         <div class="mod center w70 bg-white full-down">

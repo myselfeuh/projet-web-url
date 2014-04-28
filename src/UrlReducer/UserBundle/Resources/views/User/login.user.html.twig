@@ -3,6 +3,21 @@
 
 {% block title %}Page de login{% endblock %}
 
-{% block body %}
-    {{ form(form_login_user) }}
+{% block body %}	
+
+    {{ form_start(form_login_user) }}
+    	<fieldset>
+    		{{ form_label(form_login_user.pseudo) }}
+    		{{ form_errors(form_login_user.pseudo) }}
+    		{{ form_widget(form_login_user.pseudo, {'attr': {'class': 'form-text'}}) }}
+    	</fieldset>
+    	<fieldset>
+    		{{ form_label(form_login_user.password) }}
+    		{{ form_errors(form_login_user.password) }}
+    		{{ form_widget(form_login_user.password, {'attr': {'class': 'form-text'}}) }}
+    	</fieldset>
+    	<fieldset class="form-actions">
+    		<input type="submit" value="Submit" />
+    	</fieldset>
+    {{ form_end(form_login_user) }}	
 {% endblock %}

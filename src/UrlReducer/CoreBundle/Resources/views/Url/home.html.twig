@@ -5,15 +5,19 @@
 
 {% block body %}
     <div class="mod w70 center mt3">
-    	<h1 class="mod h3-like txtcenter mam">Saisissez votre url</h1>
+    	<h1 class="mod h4-like txtcenter mam">Saisissez votre url</h1>
 
     	{{ form_start(form_generate_url) }}
-    	    {{ form_errors(form_generate_url) }}
+            <fieldset>
+        	    {{ form_errors(form_generate_url) }}
 
-    	    {{ form_errors(form_generate_url.source) }}
-    	    {{ form_widget(form_generate_url.source, {'attr': {'class': 'btn w100 pas big'}}) }}
+        	    {{ form_errors(form_generate_url.source) }}
+        	    {{ form_widget(form_generate_url.source, {'attr': {'class': 'form-text input-generate-url'}}) }}                
+            </fieldset>
 
-    	    {{ form_widget(form_generate_url.générer, {'attr': {'class': 'd-block center mtm pavs'}}) }}
+            <fieldset class="form-actions">
+               <input type="submit" id="form_générer" name="form[générer]" class="submit-generate-url" value="Générer l'url"/>
+            </fieldset>
     	{{ form_end(form_generate_url) }}		
 	</div>
 
@@ -21,7 +25,7 @@
 
 	{% if reduced_url is defined %}
 		<div class="mod w70 center mt3">
-	    	<h1 class="mod h4-like txtcenter mam">Résultat</h1>
+	    	<h2 class="mod h4-like txtcenter mam">Résultat</h1>
 	    	<a class="d-block w60 center" href="{{ reduced_url }}">{{ reduced_url }}</a>
 		</div>
     {% endif %}
