@@ -1,5 +1,5 @@
 {# src/UrlReducer/CoreBundle/Resources/views/User/member.menu.html.twig #}
 
 {% for url, label in menu_urls %}
-    <span><a href="{{ path(url) }}">{{ label }}</a></span>
+    <li><a href="{{ path(url) }}">{{ label }}</a></li>
 {% endfor %}

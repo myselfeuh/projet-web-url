@@ -2,14 +2,18 @@
 
 <div class="line">
 	<div class="mod left pas">
-		{{ menu_message }}
+		<span class="inbl home">&nbsp;</span>
+		<span>{{ menu_message }}</span>
 	</div>
 	<div class="mod right txtright pas">
-	{{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
-
-	{% for url, label in menu_urls %}
-	    <span><a href="{{ path(url) }}">{{ label }}</a></span>
-	{% endfor %}
+		<nav role="navigation">
+			<ul>
+			{{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
+			{% for url, label in menu_urls %}
+			    <li><a href="{{ path(url) }}">{{ label }}</a></li>
+			{% endfor %}
+			</ul>
+		</nav>	
 	</div>
 </div>
 
