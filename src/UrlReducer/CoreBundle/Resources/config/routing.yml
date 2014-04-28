@@ -23,8 +23,8 @@ url_reducer_core_menu_member:
     defaults: { _controller: UrlReducerCoreBundle:Menu:member }
 
 url_reducer_core_stats:
-    pattern:  /stats
-    defaults: { _controller: UrlReducerCoreBundle:Stat:display }
+    pattern:  /stat
+    defaults: { _controller: UrlReducerCoreBundle:Stat:global }
 
 # Must be the last route declared to not match each static urls
 url_reducer_core_url_go:

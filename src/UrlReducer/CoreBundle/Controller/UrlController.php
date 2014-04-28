@@ -5,6 +5,7 @@ namespace UrlReducer\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use UrlReducer\CoreBundle\Entity\Url;
+use UrlReducer\CoreBundle\Entity\Stat;
 use UrlReducer\UserBundle\Entity\User;
 use UrlReducer\UserBundle\Service\Authentifier;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,6 +96,13 @@ class UrlController extends Controller {
         $oUrl = $oUrlRepository->findOneByCourte($sUrl);
         
         if ($oUrl != null) {
+            $oStat = new Stat;
+
+            $oStat->setUrl($oUrl);
+            $oStat->setDate(new \DateTime);
+
+            $oManager->persist($oStat);
+            $oManager->flush();
         // url found, redirection...
             $oResponse = $this->redirect($oUrl->getSource());
 
