@@ -7,28 +7,30 @@
         <title>
         {% block title %}{% endblock %}
         </title>
+
+        {% stylesheets 'bundles/urlreducercore/css/*' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
     </head>
     <body>
-        <div id="menu">
-            {{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
-        </div>
+        <div class="mod center w70 bg-white full-down">
+            <div id="menu">
+                {{ render(controller('UrlReducerCoreBundle:Menu:user', { 'sRoute': app.request.attributes.get('_route') })) }}
+            </div>
 
-        <div id="sidebar">
-            {{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
-        </div>
-
-        <div id="flash">
-        {% for label, flashes in app.session.flashbag.all %}
-            {% for flash in flashes %}
-                <div class="alert alert-{{ label }}">
-                    {{ flash }}
-                </div>
+            <div id="flash">
+            {% for label, flashes in app.session.flashbag.all %}
+                {% for flash in flashes %}
+                    <div class="alert alert-{{ label }}">
+                        {{ flash }}
+                    </div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-        </div>
+            </div>
 
-        <div id="content">
-            {% block body %}{% endblock %}
+            <div id="content" class="mod w100 pam">
+                {% block body %}{% endblock %}
+            </div>
         </div>
     </body>
 </html>

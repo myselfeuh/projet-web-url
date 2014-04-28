@@ -1,7 +1,17 @@
 {# src/UrlReducer/CoreBundle/Resources/views/User/user.menu.html.twig #}
 
-{{ menu_message }}
+<div class="line">
+	<div class="mod left pas">
+		{{ menu_message }}
+	</div>
+	<div class="mod right txtright pas">
+	{{ render(controller('UrlReducerCoreBundle:Menu:member')) }}
 
-{% for url, label in menu_urls %}
-    <span><a href="{{ path(url) }}">{{ label }}</a></span>
-{% endfor %}
+	{% for url, label in menu_urls %}
+	    <span><a href="{{ path(url) }}">{{ label }}</a></span>
+	{% endfor %}
+	</div>
+</div>
+
+
+
