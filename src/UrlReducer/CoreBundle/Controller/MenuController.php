@@ -56,7 +56,7 @@ class MenuController extends Controller {
 
 		if ($oAuthentifier->getStatus() >= Authentifier::IS_MEMBER) {
 			$aMenuEntries['url_reducer_core_url_list'] 		= 'gérer mes urls';
-			$aMenuEntries['url_reducer_core_stats'] 		= 'voir mes statistiques';
+			$aMenuEntries['url_reducer_core_stat'] 			= 'voir mes statistiques';
 			$aMenuEntries['url_reducer_user_modify'] 		= 'modifier mes informations';
 		}
 
@@ -66,6 +66,32 @@ class MenuController extends Controller {
 
 		$oResponse = $this->render(
 	        'UrlReducerCoreBundle:Menu:member.menu.html.twig',
+	        array('menu_urls' => $aMenuEntries)
+	    );
+
+	    return $oResponse;
+    }
+
+    /**
+     *
+     */
+    public function statAction() {
+    	$oAuthentifier = $this->container->get('url_reducer_user.authentifier');
+
+		$aMenuEntries = array();
+
+		if ($oAuthentifier->getStatus() >= Authentifier::IS_MEMBER) {
+			$aMenuEntries['url_reducer_core_stat']				= "Taux global";
+			$aMenuEntries['url_reducer_core_stat_by_week'] 		= "Par jour de la semaine";
+			$aMenuEntries['url_reducer_core_stat_by_hour'] 		= "Par heure de la journée";
+		}
+
+		if ($oAuthentifier->getStatus() == Authentifier::IS_ADMIN) {
+			$aMenuEntries['url_reducer_core_stat_global'] 		= "Taux cumulé (toutes les urls)";
+		}
+
+		$oResponse = $this->render(
+	        'UrlReducerCoreBundle:Menu:stat.menu.html.twig',
 	        array('menu_urls' => $aMenuEntries)
 	    );
 

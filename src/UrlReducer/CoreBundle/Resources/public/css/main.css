@@ -3,12 +3,11 @@ body{background-color:#000;font-family:"Trebuchet MS",Verdana,Arial,Helvetica,sa
 .bg-white{background-color:#fff;}
 a{color:#000;text-decoration:none;}
 a:hover{text-decoration:underline;}
-span.home{ background-image:url(../images/icon-home.png); width:40px; height:40px; background-repeat:no-repeat; margin:-7px 10px 0px -5px};
+span.home{background-image:url(../images/icon-home.png);width:40px;height:40px;background-repeat:no-repeat;margin:-7px 10px 0 -5px;}
+;
 .d-block{display:block;}
 .pavs{padding:5px;}
-li{ list-style-type:none; }
-
-
+li{list-style-type:none;}
 form{margin-top:15%;margin-left:auto;margin-right:auto;width:60%;}
 form fieldset{font-size:14px;border-bottom:1px solid #eee;margin:0 0 10px;padding:0 0 10px;}
 form fieldset.form-actions{border:none;margin:0 0 0 35%;padding:0;}
@@ -36,38 +35,19 @@ td{overflow:hidden;}
 table{margin:0;padding:0;}
 table th,table td{text-align:left;border-bottom:1px solid #ccc;padding:10px 20px;}
 table th{border-width:2px;}
-table td{color:#666;}
 table tr:last-child td{border-bottom:none;}
-table tr:nth-child(even){background:#eee;}
+nav[role="h-navigation"] li{float:left;font-size:14px;border-right:1px solid #ddd;}
+nav[role="h-navigation"] li:last-child{border-right:none;}
+nav[role="h-navigation"] li a{float:left;text-decoration:none;color:#999;border-radius:4px;padding:0 10px;}
+nav[role="h-navigation"] li a:hover,nav[role="h-navigation"] li a:focus{color:#333;}
+nav[role="h-navigation"] li.active a{font-weight:700;color:#333;}
+nav[role="v-navigation"] ul{padding-left:0; padding-bottom:5px;}
+nav[role="v-navigation"] ul li a{display:block;font-size:14px;line-height:1;padding:5px 15px;}
+nav[role="v-navigation"] ul li a:active{background:#ddd;}
+table td,nav[role="h-navigation"] li a:active{color:#666;}
+table tr:nth-child(even),nav[role="v-navigation"] ul li a:focus,nav[role="v-navigation"] ul li a:hover{background:#eee;}
 @media screen and max-width 600px {
 form fieldset label{display:block;float:none;width:auto;margin:0 0 5px;}
 form fieldset.form-actions,form fieldset.check,form fieldset.radio ul,form fieldset p.form-help{margin-left:0;padding-left:0;}
 form fieldset input.form-text,form fieldset textarea{width:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
 }
-
-nav[role="navigation"] li {
-	float: left;
-	font-size: 14px;
-	border-right: 1px solid #ddd;
-	}
-nav[role="navigation"] li:last-child {
-	border-right: none;
-	}
-nav[role="navigation"] li a {
-	float: left;
-	padding: 0 10px;
-	text-decoration: none;
-	color: #999;
-	border-radius: 4px;
-	}
-nav[role="navigation"] li a:hover,
-nav[role="navigation"] li a:focus {
-	color: #333;
-	}
-nav[role="navigation"] li a:active {
-	color: #666;
-	}
-nav[role="navigation"] li.active a {
-	font-weight: bold;
-	color: #333;
-	}

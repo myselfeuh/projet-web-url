@@ -1,0 +1,7 @@
+<nav class="mod left" role="v-navigation">
+	<ul>
+	{% for url, label in menu_urls %}
+	    <li><a href="{{ path(url) }}">{{ label }}</a></li>
+	{% endfor %}
+	</ul>
+</nav>	

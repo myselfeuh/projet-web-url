@@ -1,4 +1,10 @@
 {# src/UrlReducer/CoreBundle/Resources/views/Stat/stat.layout.html.twig #}
 {% extends 'UrlReducerCoreBundle::layout.html.twig' %}
 
-hello !
+{% block body %}
+
+{{ render(controller('UrlReducerCoreBundle:Menu:stat')) }}
+
+<img src="{{ chart_url }}" alt="chart" style="width:300px; height:300px;"/>
+
+{% endblock %}
