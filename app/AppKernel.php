@@ -18,7 +18,6 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new UrlReducer\CoreBundle\UrlReducerCoreBundle(),
             new UrlReducer\UserBundle\UrlReducerUserBundle(),
-            new Leg\GoogleChartsBundle\LegGoogleChartsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

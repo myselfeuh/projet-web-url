@@ -2,8 +2,6 @@
 
 namespace UrlReducer\CoreBundle\Controller;
 
-use Leg\GCharts\Gallery\BarChart;
-// use Leg\GoogleChartsBundle\Charts\Gallery\BarChart;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class StatController extends Controller {
@@ -27,44 +25,20 @@ class StatController extends Controller {
 	 *
 	 */
 	public function getFrequencyLineChart() {
-		$aDatas = array(200, 100, 50);
-
-		$oChart = new BarChart();
-
-        $oChart->setWidth(300)
-               ->setHeight(300)
-               ->setDatas($aDatas);
-
-        return $this->get('leg_google_charts')->build($oChart);
+		return true;
 	}
 
 	/**
 	 *
 	 */
 	public function getFrequencyByHourPieChart() {
-		$aDatas = array(200, 100, 50);
-
-		$oChart = new BarChart();
-
-        $oChart->setWidth(300)
-               ->setHeight(300)
-               ->setDatas($aDatas);
-
-        return $this->get('leg_google_charts')->build($oChart);
-	}
+		return true;
+	}	
 
 	/**
 	 *
 	 */
 	public function getFrequencyByWeekPieChart() {
-		$aDatas = array(200, 100, 50);
-
-		$oChart = new BarChart();
-
-        $oChart->setWidth(300)
-               ->setHeight(300)
-               ->setDatas($aDatas);
-
-        return $this->get('leg_google_charts')->build($oChart);	
+		return true;
 	}
 }
