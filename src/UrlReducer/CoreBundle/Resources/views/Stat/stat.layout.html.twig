@@ -2,8 +2,15 @@
 {% extends 'UrlReducerCoreBundle::layout.html.twig' %}
 
 {% block body %}
-	{% for label, chart_url in chart_urls %}
-		<h1 class="h5-like">{{ label }}</h1>
-		<img src="{{ chart_url }}" alt="chart" style="width:300px; height:300px;"/>
-	{% endfor %}
+
+	{% javascripts '@UrlReducerCoreBundle/Resources/public/js/*' %}
+	    <script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+
+	<div id="linechart"></div>
+
+	<script type="text/javascript">
+		CHART.init({{ chart_data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }});
+	</script>
 {% endblock %}
+

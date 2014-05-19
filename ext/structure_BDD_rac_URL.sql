@@ -67,17 +67,17 @@ ALTER TABLE `utilisations`
   ADD CONSTRAINT `utilisations_ibfk_1` FOREIGN KEY (`url`) REFERENCES `urls` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 
-INSERT INTO `racurl`.`membres` (`id`, `nom`, `prenom`, `pseudo`, `mail`, `mdp`, `activation`, `profil`) VALUES 
+INSERT INTO `racurl`.`membres` (`id`, `nom`, `prenom`, `pseudo`, `mail`, `mdp`, `activation`, `profil`) VALUES
   (NULL, 'penaud', 'guillaume', 'sephres', 'guillaume.penaud@gmail.com', 'us8.ughl5bQqs', 'ok', 'admin'),
   (NULL, 'dosch', 'philippe', 'eldiablo', 'philippe.dosch@gmail.com', 'us8.ughl5bQqs', 'ok', 'member'),
   (NULL, 'lalaoui', 'yann', 'yanneuh', 'yann.lalaoui@gmail.com', 'us8.ughl5bQqs', 'ok', 'member');
 
-INSERT INTO `racurl`.`urls` (`id`, `source`, `courte`, `creation`, `auteur`) VALUES 
-  (NULL, 'http://www.google.fr', '854f8a6a', CURRENT_TIMESTAMP, NULL), 
+INSERT INTO `racurl`.`urls` (`id`, `source`, `courte`, `creation`, `auteur`) VALUES
+  (NULL, 'http://www.google.fr', '854f8a6a', CURRENT_TIMESTAMP, NULL),
   (NULL, 'http://www.yahoo.fr', '2b66e83b', CURRENT_TIMESTAMP, NULL),
   (NULL, 'http://www.jeuxvideo.fr', '85027200', CURRENT_TIMESTAMP, NULL),
 
-  (NULL, 'http://www.google.fr', 'b6a85411', CURRENT_TIMESTAMP, '1'), 
+  (NULL, 'http://www.google.fr', 'b6a85411', CURRENT_TIMESTAMP, '1'),
   (NULL, 'http://www.yahoo.fr', '4c4377bc', CURRENT_TIMESTAMP, '1'),
   (NULL, 'http://www.jeuxvideo.fr', '2bfd87c0', CURRENT_TIMESTAMP, '1'),
 

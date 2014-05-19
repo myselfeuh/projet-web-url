@@ -8,15 +8,15 @@ class StatController extends Controller {
 	/**
 	 *
 	 */
-	public function frequencyAction() { 
+	public function frequencyAction() {
 		return $this->render(
-		    'UrlReducerCoreBundle:Stat:stat.layout.html.twig', 
+		    'UrlReducerCoreBundle:Stat:stat.layout.html.twig',
 		    array(
-		    	'chart_urls' => array(
+		    	'chart_data' => array(
     				"Taux d'usage" 				=> $this->getFrequencyLineChart(),
     				"Répartition par heure" 	=> $this->getFrequencyByHourPieChart(),
-    				"Répartition par semaine" 	=> $this->getFrequencyByWeekPieChart() 
-    			) 
+    				"Répartition par semaine" 	=> $this->getFrequencyByWeekPieChart()
+    			)
     		)
 		);
 	}
@@ -25,20 +25,26 @@ class StatController extends Controller {
 	 *
 	 */
 	public function getFrequencyLineChart() {
-		return true;
+		return array(
+			"LineChart2", "LineChart3", "LineChart4"
+		);
 	}
 
 	/**
 	 *
 	 */
 	public function getFrequencyByHourPieChart() {
-		return true;
-	}	
+		return array(
+			"HourPieChart2", "HourPieChart3", "HourPieChart4"
+		);
+	}
 
 	/**
 	 *
 	 */
 	public function getFrequencyByWeekPieChart() {
-		return true;
+		return array(
+			"WeekPieChart2", "WeekPieChart3", "WeekPieChart4"
+		);
 	}
 }
