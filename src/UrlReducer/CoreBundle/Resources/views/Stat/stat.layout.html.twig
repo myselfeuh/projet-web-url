@@ -3,6 +3,10 @@
 
 {% block body %}
 
+	{% if url is defined %}
+	    <a href="{{ path(url.route) }}">{{ url.label }}</a>
+	{% endif %}
+
 	{% javascripts '@UrlReducerCoreBundle/Resources/public/js/*' %}
 	    <script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
@@ -12,7 +16,6 @@
 		<span id="pie_heure" style="width:600px; height:700px; display:inline-block"></span>
 		<span id="pie_semaine" style="width:600px; height:700px; display:inline-block"></span>
 	</div>
-
 
 	<script type="text/javascript">
 		CHART.init({{ chart_data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }});

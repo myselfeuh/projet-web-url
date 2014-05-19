@@ -26,21 +26,9 @@ url_reducer_core_stat:
     pattern:  /stat
     defaults: { _controller: UrlReducerCoreBundle:Stat:frequency }
 
-url_reducer_core_stat_by_week:
-    pattern:  /stat/by_week
-    defaults: { _controller: UrlReducerCoreBundle:Stat:frequencyByWeek }
-
-url_reducer_core_stat_by_hour:
-    pattern:  /stat/by_hour
-    defaults: { _controller: UrlReducerCoreBundle:Stat:frequencyByHour }
-
-url_reducer_core_stat_by_url:
-    pattern:  /stat/by_url
-    defaults: { _controller: UrlReducerCoreBundle:Stat:percentageByUrl }
-
-url_reducer_core_stat_global:
-    pattern:  /stat/global
-    defaults: { _controller: UrlReducerCoreBundle:Stat:frequencyGlobal }
+url_reducer_core_stat_admin:
+    pattern:  /stat/admin
+    defaults: { _controller: UrlReducerCoreBundle:Stat:admin }
 
 # Must be the last route declared to not match each static urls
 url_reducer_core_url_go:

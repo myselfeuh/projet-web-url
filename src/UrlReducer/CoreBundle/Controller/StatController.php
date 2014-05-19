@@ -10,9 +10,13 @@ class StatController extends Controller {
 	const HOUR_PIE 	= 1;
 	const WEEK_PIE 	= 2;
 
+	const MODE_NORMAL	= 5;
+	const MODE_ADMIN	= 6;
+
 	//
 	private $aOptions = array();
 	private $oUser = null;
+	private $iMode = StatController::MODE_NORMAL;
 
 	/**
 	 *
@@ -23,16 +27,42 @@ class StatController extends Controller {
 		$oAuthentifier = $this->container->get('url_reducer_user.authentifier');
 		$this->oUser = $oAuthentifier->getUser();
 
+		if (StatController::MODE_ADMIN && !$oAuthentifier->isAdmin()) {
+			// @TODO error
+		}
+
+		$aResponse = array(
+	    	'chart_data' => array(
+				"line" 			=> $this->parse($this->getFrequencyLineChart($oConnection), StatController::LINE),
+				"pie_heure" 	=> $this->parse($this->getFrequencyByHourPieChart($oConnection), StatController::HOUR_PIE),
+				"pie_semaine" 	=> $this->parse($this->getFrequencyByWeekPieChart($oConnection), StatController::WEEK_PIE)
+			)
+		);
+
+		if ($oAuthentifier->isAdmin()) {
+			if ($this->iMode == StatController::MODE_ADMIN) {
+				$aResponse['url'] = array(
+					'route' => 'url_reducer_core_stat',
+					'label' => 'Voir mes statistiques'
+				);
+			} else {
+				$aResponse['url'] = array(
+					'route' => 'url_reducer_core_stat_admin',
+					'label' => 'Voir les statistiques globales'
+				);
+			}
+		}
+
 		return $this->render(
 		    'UrlReducerCoreBundle:Stat:stat.layout.html.twig',
-		    array(
-		    	'chart_data' => array(
-    				"line" 			=> $this->parse($this->getFrequencyLineChart($oConnection), StatController::LINE),
-    				"pie_heure" 	=> $this->parse($this->getFrequencyByHourPieChart($oConnection), StatController::HOUR_PIE),
-    				"pie_semaine" 	=> $this->parse($this->getFrequencyByWeekPieChart($oConnection), StatController::WEEK_PIE)
-    			)
-    		)
+		    $aResponse
 		);
+	}
+
+	public function adminAction() {
+		$this->iMode = StatController::MODE_ADMIN;
+
+		return $this->frequencyAction();
 	}
 
 	private function parse($aResultSet, $type_chart) {
@@ -99,6 +129,12 @@ class StatController extends Controller {
 			"type" => "number"
 		);
 
+		if ($this->iMode == StatController::MODE_ADMIN) {
+			$sWhere = '';
+		} else {
+			$sWhere = ' AND m.id = :user_id';
+		}
+
 		$sQuery = '
 			SELECT
 				DATE(date) as day_date,
@@ -110,7 +146,7 @@ class StatController extends Controller {
 			WHERE
 				ut.url = u.id
 				AND u.auteur = m.id
-				AND m.id = :user_id
+				' . $sWhere . '
 			GROUP BY
 				day_date
 		';
@@ -134,6 +170,12 @@ class StatController extends Controller {
 			"type" => "number"
 		);
 
+		if ($this->iMode == StatController::MODE_ADMIN) {
+			$sWhere = '';
+		} else {
+			$sWhere = ' AND m.id = :user_id';
+		}
+
 		$sQuery = '
 			SELECT
 				DATE_FORMAT(date, "%H") AS hour,
@@ -145,7 +187,7 @@ class StatController extends Controller {
 			WHERE
 				ut.url = u.id
 				AND u.auteur = m.id
-				AND m.id = :user_id
+				' . $sWhere . '
 			GROUP BY
 				hour
 		';
@@ -169,6 +211,12 @@ class StatController extends Controller {
 			"type" => "number"
 		);
 
+		if ($this->iMode == StatController::MODE_ADMIN) {
+			$sWhere = '';
+		} else {
+			$sWhere = ' AND m.id = :user_id';
+		}
+
 		$sQuery = '
 			SELECT
 				DAYNAME(date) as day_date,
@@ -180,7 +228,7 @@ class StatController extends Controller {
 			WHERE
 				ut.url = u.id
 				AND u.auteur = m.id
-				AND m.id = :user_id
+				' . $sWhere . '
 			GROUP BY
 				day_date
 		';
