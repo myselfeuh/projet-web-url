@@ -3,41 +3,54 @@
 namespace UrlReducer\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Doctrine\DBAL\DoctrineManager;
 
 class StatController extends Controller {
 	/**
 	 *
 	 */
 	public function frequencyAction() {
-		$oDatabaseConnection = Doctrine_Manager::getInstance()->connection();  
+		$oConnection = $this->getDoctrine()->getEntityManager()->getConnection();
 
 		return $this->render(
 		    'UrlReducerCoreBundle:Stat:stat.layout.html.twig',
 		    array(
 		    	'chart_data' => array(
-    				"line" 			=> $this->getFrequencyLineChart($oDatabaseConnection),
-    				"pie_heure" 	=> $this->getFrequencyByHourPieChart($oDatabaseConnection),
-    				"pie_semaine" 	=> $this->getFrequencyByWeekPieChart($oDatabaseConnection)
+    				"line" 			=> $this->getFrequencyLineChart($oConnection),
+    				"pie_heure" 	=> $this->getFrequencyByHourPieChart($oConnection),
+    				"pie_semaine" 	=> $this->getFrequencyByWeekPieChart($oConnection)
     			)
     		)
 		);
 	}
 
-	/**
-	 *
-	 */
-	public function getFrequencyLineChart() {
-		$sql = "SELECT * FROM utilisations";
-		$stmt = $conn->query($sql); // Simple, but has several drawbacks
-
-		return $stmt->fetchAll();
+	private function parse() {
+		
 	}
 
 	/**
 	 *
 	 */
-	public function getFrequencyByHourPieChart() {
+	public function getFrequencyLineChart($oConnection) {
+		$sQuery = '
+			SELECT 
+				DATE(date) as day_date,
+				COUNT(1) AS nb_utilisations
+			FROM
+				utilisations
+			GROUP BY
+				day_date
+		';
+
+		$oStatement = $oConnection->prepare($sQuery);
+		$oStatement->execute();
+
+		return $oStatement->fetchAll();
+	}
+
+	/**
+	 *
+	 */
+	public function getFrequencyByHourPieChart($oConnection) {
 		return array(
 			"HourPieChart2", "HourPieChart3", "HourPieChart4"
 		);
@@ -46,7 +59,7 @@ class StatController extends Controller {
 	/**
 	 *
 	 */
-	public function getFrequencyByWeekPieChart() {
+	public function getFrequencyByWeekPieChart($oConnection) {
 		return array(
 			"WeekPieChart2", "WeekPieChart3", "WeekPieChart4"
 		);

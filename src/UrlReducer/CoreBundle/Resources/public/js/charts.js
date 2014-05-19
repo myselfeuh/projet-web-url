@@ -27,16 +27,20 @@ CHART = {
 
 	drawChart : function (chart_data, chart_type, container_id, options) {
 		console.log(chart_data);
-        console.log(chart_type);
-        console.log(container_id);
 
-    	var data = google.visualization.arrayToDataTable([
-    	  ["Date", "Taux d'utilisation"],
-    	  ['17/04/2004',  24],
-    	  ['18/04/2004',  14],
-    	  ['19/04/2004',  6],
-    	  ['20/04/2004',  1]
-    	]);
+        var data = google.visualization.DataTable();
+
+        // data.addColumn('string', 'Task');
+        // data.addColumn('number', 'Hours per Day');
+        data.addRows(chart_data);
+
+    	// var data = google.visualization.arrayToDataTable([
+    	//   ["Date", "Taux d'utilisation"],
+    	//   ['17/04/2004',  24],
+    	//   ['18/04/2004',  14],
+    	//   ['19/04/2004',  6],
+    	//   ['20/04/2004',  1]
+    	// ]);
 
         var elt = document.getElementById(container_id);
         var chart;
