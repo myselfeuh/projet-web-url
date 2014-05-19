@@ -15,34 +15,25 @@ CHART = {
     loadCharts : function () {
         var options;
         // display line chart
-        options = { title: 'line' };
+        options = { title: "Evolution du taux d'utilisation" };
         CHART.drawChart(global_chart_data.line, CHART.TYPE_LINE, "line", options);
         // display first pie chart
-        options = { title: 'pie_heure' };
+        options = {
+        	title: "Echantillonage par heure",
+        	is3D: true
+        };
+
         CHART.drawChart(global_chart_data.pie_heure, CHART.TYPE_PIE, "pie_heure", options);
         // display second pie chart
-        options = { title: 'pie_semaine' };
+        options = {
+        	title: 'Echantillonage par jour de la semaine',
+        	pieHole: 0.3
+        };
+
         CHART.drawChart(global_chart_data.pie_semaine, CHART.TYPE_PIE, "pie_semaine", options);
     },
 
 	drawChart : function (chart_data, chart_type, container_id, options) {
-
-		console.log(chart_data);
-
-  //   	var chart_data = {
-		//   "cols": [
-		//         {"id":"","label":"Topping","pattern":"","type":"string"},
-		//         {"id":"","label":"Slices","pattern":"","type":"number"}
-		//       ],
-		//   "rows": [
-		//         {"c":[{"v":"Mushrooms","f":null},{"v":3,"f":null}]},
-		//         {"c":[{"v":"Onions","f":null},{"v":1,"f":null}]},
-		//         {"c":[{"v":"Olives","f":null},{"v":1,"f":null}]},
-		//         {"c":[{"v":"Zucchini","f":null},{"v":1,"f":null}]},
-		//         {"c":[{"v":"Pepperoni","f":null},{"v":2,"f":null}]}
-		//       ]
-		// };
-
 		var data = new google.visualization.DataTable(chart_data);
 
         var elt = document.getElementById(container_id);

@@ -14,7 +14,7 @@ class UrlControllerException extends \Exception {};
 
 class UrlController extends Controller {
     /**
-     * 
+     *
      */
     public function generateReducedUrlAction(Request $oRequest) {
         $aRenderingData = array();
@@ -52,7 +52,7 @@ class UrlController extends Controller {
                 // if no url with that source, let create one
                     throw new UrlControllerException;
                 } else if (
-                    $oUser != null 
+                    $oUser != null
                     && $oExistingUrl->getAuteur()->getId() != $oUser->getId()
                 ) {
                 // a user must have his own reduced urls, so let create one
@@ -72,14 +72,14 @@ class UrlController extends Controller {
                 $aRenderingData['reduced_url'] = $this->urlify($sEncryptedUrl);
 
                 $oManager->persist($oUrl);
-                $oManager->flush();    
+                $oManager->flush();
             }
         }
 
         $aRenderingData['form_generate_url'] = $oFormUrl->createView();
-        
+
         return $this->render(
-            'UrlReducerCoreBundle:Url:home.html.twig', 
+            'UrlReducerCoreBundle:Url:home.html.twig',
             $aRenderingData
         );
     }
@@ -94,7 +94,7 @@ class UrlController extends Controller {
 
         $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
         $oUrl = $oUrlRepository->findOneByCourte($sUrl);
-        
+
         if ($oUrl != null) {
             $oStat = new Stat;
 
@@ -107,7 +107,7 @@ class UrlController extends Controller {
             $oResponse = $this->redirect($oUrl->getSource());
 
         } else {
-        // url not found, back to index 
+        // url not found, back to index
             $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
             $oResponse = $this->redirect($sUrlToIndex);
 
@@ -134,15 +134,15 @@ class UrlController extends Controller {
 
                 $oDoctrine = $this->getDoctrine();
                 $oUrlRepository = $oDoctrine->getRepository('UrlReducerCoreBundle:Url');
-                
+
                 if ($oAuthentifier->getStatus() == Authentifier::IS_ADMIN) {
                     $aUrls = $oUrlRepository->findAll();
                 } else {
                     $aUrls = $oUrlRepository->findByAuteur($oUser->getId());
                 }
-                
+
                 $oResponse = $this->render(
-                    'UrlReducerCoreBundle:Url:list.url.html.twig', 
+                    'UrlReducerCoreBundle:Url:list.url.html.twig',
                     array('urls' => $aUrls)
                 );
             }
@@ -191,7 +191,7 @@ class UrlController extends Controller {
             $oFlashBag->add('delete url error', $e->getMessage());
 
             $sUrlToIndex = $this->generateUrl('url_reducer_core_url_generate');
-            $oResponse = $this->redirect($sUrlToIndex); 
+            $oResponse = $this->redirect($sUrlToIndex);
         }
 
         return $oResponse;
@@ -213,7 +213,7 @@ class UrlController extends Controller {
     }
 
     /**
-     * Get the full-reduced url (with host part) 
+     * Get the full-reduced url (with host part)
      *
      * @param String - the encrypted url
      */

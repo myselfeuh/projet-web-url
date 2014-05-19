@@ -8,11 +8,14 @@
 	{% endjavascripts %}
 
 	<div id="line"></div>
-	<div id="pie_heure"></div>
-	<div id="pie_semaine"></div>
+	<div>
+		<span id="pie_heure" style="width:600px; height:700px; display:inline-block"></span>
+		<span id="pie_semaine" style="width:600px; height:700px; display:inline-block"></span>
+	</div>
+
 
 	<script type="text/javascript">
-		{# CHART.init({{ chart_data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}); #}
+		CHART.init({{ chart_data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }});
 	</script>
 {% endblock %}
 
