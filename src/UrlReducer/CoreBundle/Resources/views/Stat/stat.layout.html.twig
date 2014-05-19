@@ -11,11 +11,9 @@
 	    <script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
 
-	<div id="line"></div>
-	<div>
-		<span id="pie_heure" style="width:600px; height:700px; display:inline-block"></span>
-		<span id="pie_semaine" style="width:600px; height:700px; display:inline-block"></span>
-	</div>
+	<div id="line" class="chart"></div>
+	<div id="pie_heure" class="chart pie"></div>
+	<div id="pie_semaine" class="chart pie"></div>
 
 	<script type="text/javascript">
 		CHART.init({{ chart_data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }});

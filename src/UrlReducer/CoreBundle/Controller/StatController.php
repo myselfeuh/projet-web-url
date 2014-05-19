@@ -95,12 +95,13 @@ class StatController extends Controller {
 
 				$sSetKey["c"][$i]["v"] = (int) $mValue;
 
-				switch ($type_chart) {
+				// @fut utile
+				/* switch ($type_chart) {
 					case StatController::LINE:
 						$sSetKey["c"][$i]["f"] = $mValue;
 						break;
 					case StatController::HOUR_PIE:
-						$sSetKey["c"][$i]["f"] = $mValue . "h";
+						$sSetKey["c"][$i]["f"] = $mValue;
 						break;
 					case StatController::WEEK_PIE:
 						$sSetKey["c"][$i]["f"] = $mValue;
@@ -109,7 +110,7 @@ class StatController extends Controller {
 					default:
 						$sSetKey["c"][$i]["f"] = null;
 						break;
-				}
+				}*/
 
 				$i++;
 			}

@@ -52,3 +52,5 @@ form fieldset label{display:block;float:none;width:auto;margin:0 0 5px;}
 form fieldset.form-actions,form fieldset.check,form fieldset.radio ul,form fieldset p.form-help{margin-left:0;padding-left:0;}
 form fieldset input.form-text,form fieldset textarea{width:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
 }
+.chart { width:80%; margin:0 auto; }
+.pie { height:500px;}
