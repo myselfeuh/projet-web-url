@@ -1,6 +1,6 @@
 html,body{height:100%;overflow:visible;}
 .full-down{min-height:100%;}
-body{background-color:#000;font-family:"Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;}
+body{background-color:#fff;font-family:"Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;}
 .bg-white{background-color:#fff;}
 a{color:#000;text-decoration:none;}
 a:hover{text-decoration:underline;}
