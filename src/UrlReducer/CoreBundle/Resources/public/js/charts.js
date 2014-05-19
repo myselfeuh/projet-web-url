@@ -2,16 +2,33 @@
 CHART = {
     chart_data: null,
 
-    init : function( data ) {
+    TYPE_LINE: 1,
+    TYPE_PIE: 2,
+
+    init : function(data) {
     	chart_data = data;
-    	// line chart
+        // line chart
     	google.load("visualization", "1", {packages:["corechart"]});
-    	google.setOnLoadCallback(CHART.drawChart);
+    	google.setOnLoadCallback(CHART.loadCharts);
     },
 
-	drawChart : function () {
+    loadCharts : function () {
+        var options;
+        // display line chart
+        options = { title: 'line' };
+        CHART.drawChart(chart_data.line, CHART.TYPE_LINE, "line", options);
+        // display first pie chart
+        options = { title: 'pie_heure' };
+        CHART.drawChart(chart_data.pie_heure, CHART.TYPE_PIE, "pie_heure", options);
+        // display second pie chart
+        options = { title: 'pie_semaine' };
+        CHART.drawChart(chart_data.pie_semaine, CHART.TYPE_PIE, "pie_semaine", options);
+    },
 
+	drawChart : function (chart_data, chart_type, container_id, options) {
 		console.log(chart_data);
+        console.log(chart_type);
+        console.log(container_id);
 
     	var data = google.visualization.arrayToDataTable([
     	  ["Date", "Taux d'utilisation"],
@@ -21,11 +38,22 @@ CHART = {
     	  ['20/04/2004',  1]
     	]);
 
-    	var options = {
-    	  title: 'Company Performance'
-    	};
+        var elt = document.getElementById(container_id);
+        var chart;
 
-    	var chart = new google.visualization.LineChart(document.getElementById('linechart'));
+        switch (chart_type) {
+            case CHART.TYPE_LINE:
+                chart = new google.visualization.LineChart(elt);
+            break;
+     
+            case CHART.TYPE_PIE:
+                chart = new google.visualization.PieChart(elt);
+               break;
+         
+            default:  
+               break;
+        }
+
     	chart.draw(data, options);
     },
 

@@ -7,7 +7,9 @@
 	    <script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
 
-	<div id="linechart"></div>
+	<div id="line"></div>
+	<div id="pie_heure"></div>
+	<div id="pie_semaine"></div>
 
 	<script type="text/javascript">
 		CHART.init({{ chart_data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }});

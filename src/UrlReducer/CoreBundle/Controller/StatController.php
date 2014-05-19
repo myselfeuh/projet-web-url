@@ -3,19 +3,22 @@
 namespace UrlReducer\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\DBAL\DoctrineManager;
 
 class StatController extends Controller {
 	/**
 	 *
 	 */
 	public function frequencyAction() {
+		$oDatabaseConnection = Doctrine_Manager::getInstance()->connection();  
+
 		return $this->render(
 		    'UrlReducerCoreBundle:Stat:stat.layout.html.twig',
 		    array(
 		    	'chart_data' => array(
-    				"Taux d'usage" 				=> $this->getFrequencyLineChart(),
-    				"Répartition par heure" 	=> $this->getFrequencyByHourPieChart(),
-    				"Répartition par semaine" 	=> $this->getFrequencyByWeekPieChart()
+    				"line" 			=> $this->getFrequencyLineChart($oDatabaseConnection),
+    				"pie_heure" 	=> $this->getFrequencyByHourPieChart($oDatabaseConnection),
+    				"pie_semaine" 	=> $this->getFrequencyByWeekPieChart($oDatabaseConnection)
     			)
     		)
 		);
@@ -25,9 +28,10 @@ class StatController extends Controller {
 	 *
 	 */
 	public function getFrequencyLineChart() {
-		return array(
-			"LineChart2", "LineChart3", "LineChart4"
-		);
+		$sql = "SELECT * FROM utilisations";
+		$stmt = $conn->query($sql); // Simple, but has several drawbacks
+
+		return $stmt->fetchAll();
 	}
 
 	/**
